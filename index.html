@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Sistem Manajemen Data Mustahik Qurban — Musholla Nurul Falah">
+<meta name="theme-color" content="#1a4f7a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Data Mustahik Qurban · Musholla Nurul Falah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+  PRODUCTION VERSION 4.0.0
+  Musholla Nurul Falah — Sistem Manajemen Mustahik Qurban
+  Build: Stable | Long-term support
+============================================================ -->
+
+<style>
+/* =============================================================
+   DESIGN TOKENS
+============================================================= */
+:root {
+  --blue-900: #0b2e50;
+  --blue-800: #0f3d6b;
+  --blue-700: #1a4f7a;
+  --blue-600: #1f5f94;
+  --blue-500: #2571ad;
+  --blue-100: #dbeeff;
+  --blue-50:  #eef6ff;
+  --green-700: #065f46;
+  --green-500: #0e9f6e;
+  --green-100: #d1fae5;
+  --red-600:  #dc2626;
+  --red-500:  #ef4444;
+  --red-100:  #fee2e2;
+  --amber-500:#f59e0b;
+  --amber-100:#fef3c7;
+  --gray-50:  #f8fafd;
+  --gray-100: #f0f5fb;
+  --gray-200: #d1e4f2;
+  --gray-300: #b0cce0;
+  --gray-500: #6b8fa8;
+  --gray-700: #3d5a70;
+  --gray-900: #0e2638;
+  --white:    #ffffff;
+  --font:     'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 14px;
+  --radius-xl:18px;
+  --shadow-1: 0 1px 3px rgba(14,38,56,.07), 0 1px 2px rgba(14,38,56,.06);
+  --shadow-2: 0 4px 16px rgba(14,38,56,.10), 0 2px 6px rgba(14,38,56,.07);
+  --shadow-3: 0 10px 40px rgba(14,38,56,.14), 0 4px 12px rgba(14,38,56,.08);
+  --t: all .16s ease;
+}
+
+/* =============================================================
+   RESET
+============================================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--gray-100);
+  color: var(--gray-900);
+  min-height: 100dvh;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select, textarea { font-family: var(--font); }
+button { cursor: pointer; }
+
+/* =============================================================
+   LAYOUT
+============================================================= */
+.container { max-width: 1160px; margin: 0 auto; padding: 0 20px; }
+main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
+
+/* =============================================================
+   HEADER
+============================================================= */
+.site-header {
+  background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 60%, #1d6fac 100%);
+  position: sticky; top: 0; z-index: 500;
+  box-shadow: 0 2px 20px rgba(11,46,80,.45);
+}
+.header-wrap {
+  max-width: 1160px; margin: 0 auto;
+  padding: 13px 20px;
+  display: flex; align-items: center; gap: 13px;
+}
+.header-emblem {
+  width: 44px; height: 44px; flex-shrink: 0;
+  background: rgba(255,255,255,.12);
+  border: 2px solid rgba(255,255,255,.2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.header-text h1 {
+  font-family: 'Amiri', serif;
+  font-size: 1.3rem; font-weight: 700;
+  color: #fff; line-height: 1.2;
+}
+.header-text p {
+  font-size: .7rem; color: rgba(255,255,255,.6);
+  margin-top: 1px; letter-spacing: .04em;
+}
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+.year-chip {
+  background: rgba(255,255,255,.13);
+  border: 1px solid rgba(255,255,255,.2);
+  color: #fff; padding: 4px 11px;
+  border-radius: 20px; font-size: .69rem;
+  font-weight: 700; letter-spacing: .05em;
+  white-space: nowrap;
+}
+.admin-toggle {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(0,0,0,.2);
+  border: 1px solid rgba(255,255,255,.13);
+  color: rgba(255,255,255,.85);
+  padding: 6px 13px; border-radius: 20px;
+  font-size: .71rem; font-weight: 600;
+  transition: var(--t); white-space: nowrap;
+}
+.admin-toggle:hover { background: rgba(255,255,255,.17); }
+.admin-toggle.on {
+  background: rgba(14,159,110,.25);
+  border-color: rgba(14,159,110,.45);
+  color: #6ee7b7;
+}
+.admin-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,.3);
+  transition: var(--t); flex-shrink: 0;
+}
+.admin-toggle.on .admin-dot { background: #6ee7b7; box-shadow: 0 0 6px #6ee7b7; }
+
+/* =============================================================
+   ADMIN NOTICE BAR
+============================================================= */
+#adminBar {
+  display: none;
+  background: linear-gradient(90deg, #021e12, #042e1e);
+  color: #6ee7b7; padding: 8px 20px;
+  font-size: .73rem; font-weight: 600;
+  align-items: center; gap: 12px;
+  border-bottom: 1px solid rgba(110,231,183,.08);
+}
+#adminBar.on { display: flex; }
+.admin-bar-right { margin-left: auto; display: flex; gap: 7px; align-items: center; }
+.session-chip {
+  font-size: .67rem; opacity: .7;
+  background: rgba(0,0,0,.25); padding: 2px 8px; border-radius: 10px;
+}
+
+/* =============================================================
+   STATUS BAR
+============================================================= */
+.status-bar {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: var(--radius-m);
+  padding: 9px 15px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 9px;
+  box-shadow: var(--shadow-1); font-size: .77rem; color: var(--gray-500);
+}
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gray-300); flex-shrink: 0; transition: background .3s;
+}
+.status-dot.online  { background: var(--green-500); box-shadow: 0 0 6px var(--green-500); }
+.status-dot.offline { background: var(--red-500); }
+.status-dot.syncing { background: var(--amber-500); animation: blink 1s infinite; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:.3} }
+#statusMsg { font-weight: 600; color: var(--gray-700); }
+.badge-offline {
+  margin-left: auto; background: var(--amber-100);
+  color: #78350f; padding: 2px 8px;
+  border-radius: 8px; font-size: .68rem; font-weight: 700; display: none;
+}
+.sync-time { margin-left: auto; font-size: .69rem; color: var(--gray-300); }
+
+/* =============================================================
+   CARD
+============================================================= */
+.card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-1);
+  margin-bottom: 16px; overflow: hidden;
+}
+.card-head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--gray-200);
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: linear-gradient(to bottom, var(--white), var(--gray-50));
+}
+.card-ico {
+  width: 32px; height: 32px;
+  background: var(--blue-50); border-radius: var(--radius-s);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.card-lbl { font-size: .88rem; font-weight: 700; color: var(--blue-700); }
+.card-body { padding: 18px 20px; }
+
+/* =============================================================
+   YEAR TABS
+============================================================= */
+.year-tabs { display: flex; gap: 5px; margin-left: auto; flex-wrap: wrap; }
+.ytab {
+  padding: 4px 11px; border-radius: 16px;
+  font-size: .69rem; font-weight: 700;
+  border: 1.5px solid var(--gray-200);
+  background: var(--blue-50); color: var(--blue-700);
+  transition: var(--t);
+}
+.ytab:hover:not(.on) { background: var(--blue-100); border-color: var(--blue-500); }
+.ytab.on { background: var(--blue-700); color: #fff; border-color: var(--blue-700); }
+
+/* =============================================================
+   STATS GRID
+============================================================= */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+  gap: 10px; padding: 16px 20px;
+}
+.stat-card {
+  background: var(--gray-50); border: 1px solid var(--gray-200);
+  border-radius: var(--radius-m); padding: 13px 10px;
+  text-align: center; cursor: pointer;
+  transition: box-shadow .18s, transform .18s;
+  position: relative; overflow: hidden;
+}
+.stat-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--gray-200); transition: background .18s;
+}
+.stat-card:hover { box-shadow: var(--shadow-2); transform: translateY(-2px); }
+.stat-card:hover::before { background: var(--blue-500); }
+.stat-card.primary {
+  background: linear-gradient(135deg, var(--blue-800), var(--blue-500));
+  border-color: transparent; cursor: default;
+}
+.stat-card.primary::before { display: none; }
+.stat-card.primary:hover { transform: none; box-shadow: none; }
+.stat-num {
+  font-size: 1.85rem; font-weight: 800; color: var(--blue-700);
+  line-height: 1; font-variant-numeric: tabular-nums;
+}
+.stat-card.primary .stat-num { color: #fff; }
+.stat-lbl {
+  font-size: .65rem; font-weight: 700;
+  color: var(--gray-500); margin-top: 5px;
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.stat-card.primary .stat-lbl { color: rgba(255,255,255,.7); }
+
+/* =============================================================
+   FORM
+============================================================= */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 160px 140px auto;
+  gap: 11px; align-items: end;
+}
+@media (max-width: 720px) { .form-row { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 460px) { .form-row { grid-template-columns: 1fr; } }
+
+.fld label {
+  display: block; font-size: .7rem; font-weight: 700;
+  color: var(--gray-500); margin-bottom: 5px;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.fld input, .fld select {
+  width: 100%; padding: 10px 12px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-m);
+  font-size: .875rem; color: var(--gray-900);
+  background: var(--gray-50);
+  transition: var(--t); outline: none;
+  appearance: none; -webkit-appearance: none;
+}
+.fld select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b8fa8' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; }
+.fld input:focus, .fld select:focus {
+  border-color: var(--blue-500);
+  box-shadow: 0 0 0 3px rgba(37,113,173,.13);
+  background: var(--white);
+}
+.fld input.err { border-color: var(--red-500); box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
+.ferr { font-size: .7rem; color: var(--red-500); margin-top: 4px; font-weight: 600; display: none; }
+
+/* =============================================================
+   BUTTONS
+============================================================= */
+.btn {
+  display: inline-flex; align-items: center;
+  justify-content: center; gap: 5px;
+  padding: 10px 17px; border-radius: var(--radius-m);
+  font-size: .84rem; font-weight: 600; border: none;
+  transition: var(--t); white-space: nowrap; line-height: 1;
+}
+.btn:disabled { opacity: .5; cursor: not-allowed; transform: none !important; pointer-events: none; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+  color: #fff; box-shadow: 0 3px 10px rgba(26,79,122,.22);
+}
+.btn-primary:hover { box-shadow: 0 5px 16px rgba(26,79,122,.32); transform: translateY(-1px); }
+.btn-success {
+  background: linear-gradient(135deg, var(--green-700), var(--green-500));
+  color: #fff; box-shadow: 0 3px 10px rgba(14,159,110,.22);
+}
+.btn-success:hover { transform: translateY(-1px); }
+.btn-outline { background: transparent; color: var(--blue-700); border: 1.5px solid var(--gray-200); }
+.btn-outline:hover { background: var(--blue-50); border-color: var(--blue-500); }
+.btn-danger { background: transparent; color: var(--red-500); border: 1.5px solid #fca5a5; }
+.btn-danger:hover { background: var(--red-100); border-color: var(--red-500); }
+.btn-ghost { background: transparent; color: var(--gray-700); border: 1.5px solid var(--gray-200); }
+.btn-ghost:hover { background: var(--gray-50); }
+.btn-sm { padding: 6px 11px; font-size: .75rem; }
+.btn-xs { padding: 3px 8px; font-size: .7rem; border-radius: var(--radius-s); }
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #fff; border-radius: 50%;
+  animation: spin .6s linear infinite; display: inline-block;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =============================================================
+   ADMIN PANEL
+============================================================= */
+.admin-panel { display: none; }
+.admin-panel.on { display: block; }
+.ap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px; padding: 18px 20px;
+}
+@media (max-width: 680px) { .ap-grid { grid-template-columns: 1fr; } }
+.ap-sect {
+  background: var(--gray-50); border: 1px solid var(--gray-200);
+  border-radius: var(--radius-m); padding: 16px;
+}
+.ap-sect h4 {
+  font-size: .76rem; font-weight: 700; color: var(--blue-700);
+  text-transform: uppercase; letter-spacing: .05em;
+  padding-bottom: 10px; margin-bottom: 12px;
+  border-bottom: 1px solid var(--gray-200);
+  display: flex; align-items: center; gap: 7px;
+}
+
+/* Year pills */
+.year-pills { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; min-height: 28px; }
+.year-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 11px 4px 12px;
+  border-radius: 16px; font-size: .73rem; font-weight: 700;
+  background: var(--blue-50); border: 1px solid var(--gray-200);
+  color: var(--blue-700);
+}
+.year-pill.current { background: var(--blue-700); color: #fff; border-color: var(--blue-700); }
+.year-pill-del {
+  background: none; border: none; cursor: pointer;
+  color: inherit; opacity: .65; font-size: .72rem; padding: 0; line-height: 1;
+  transition: opacity .15s;
+}
+.year-pill-del:hover { opacity: 1; }
+.add-year {
+  display: flex; gap: 8px; align-items: center;
+}
+.add-year input {
+  flex: 1; padding: 8px 11px;
+  border: 1.5px solid var(--gray-200); border-radius: var(--radius-m);
+  font-size: .84rem; color: var(--gray-900); background: var(--white);
+  outline: none; transition: var(--t);
+}
+.add-year input:focus { border-color: var(--blue-500); box-shadow: 0 0 0 3px rgba(37,113,173,.12); }
+
+/* Drop zone */
+.drop-zone {
+  display: block; width: 100%;
+  padding: 22px 16px; border: 2px dashed var(--gray-200);
+  border-radius: var(--radius-m); text-align: center;
+  color: var(--gray-500); font-size: .82rem; cursor: pointer;
+  transition: var(--t); background: var(--white); margin-bottom: 10px;
+}
+.drop-zone:hover, .drop-zone.drag {
+  border-color: var(--blue-500); background: var(--blue-50); color: var(--blue-700);
+}
+.drop-zone input[type=file] { display: none; }
+.import-preview {
+  font-size: .77rem; color: var(--gray-700);
+  background: var(--green-100); border: 1px solid var(--green-500);
+  border-radius: var(--radius-s); padding: 8px 11px;
+  margin-bottom: 8px; display: none; line-height: 1.5;
+}
+.import-note { font-size: .7rem; color: var(--gray-500); line-height: 1.6; margin-top: 8px; }
+.import-note code { background: var(--gray-100); padding: 1px 5px; border-radius: 4px; font-size: .69rem; }
+.import-actions { display: flex; gap: 7px; margin-top: 11px; flex-wrap: wrap; }
+
+/* Export list */
+.export-list { display: flex; flex-direction: column; gap: 8px; }
+.export-list hr { border: none; border-top: 1px solid var(--gray-200); margin: 2px 0; }
+
+/* Audit log */
+.audit-list {
+  max-height: 200px; overflow-y: auto;
+  font-size: .74rem; line-height: 1;
+}
+.audit-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 7px 0; border-bottom: 1px solid var(--gray-200);
+}
+.audit-item:last-child { border-bottom: none; }
+.audit-tag {
+  flex-shrink: 0; padding: 2px 6px; border-radius: 4px;
+  font-size: .64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+}
+.audit-tag.add  { background: var(--green-100); color: var(--green-700); }
+.audit-tag.edit { background: var(--blue-50);   color: var(--blue-700); }
+.audit-tag.del  { background: var(--red-100);   color: var(--red-600); }
+.audit-tag.sys  { background: var(--amber-100); color: #78350f; }
+.audit-msg { flex: 1; color: var(--gray-700); font-size: .73rem; }
+.audit-time { color: var(--gray-300); white-space: nowrap; font-size: .68rem; }
+.audit-empty { color: var(--gray-300); font-size: .76rem; padding: 8px 0; }
+
+/* =============================================================
+   FILTER BAR
+============================================================= */
+.filter-bar {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--gray-200);
+  background: var(--gray-50); align-items: center;
+}
+.search-box { flex: 1; min-width: 170px; position: relative; }
+.search-box svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--gray-300); pointer-events: none; }
+.search-box input {
+  width: 100%; padding: 9px 12px 9px 32px;
+  border: 1.5px solid var(--gray-200); border-radius: var(--radius-m);
+  font-size: .84rem; background: var(--white);
+  color: var(--gray-900); outline: none; transition: var(--t);
+}
+.search-box input:focus { border-color: var(--blue-500); box-shadow: 0 0 0 3px rgba(37,113,173,.12); }
+.filter-sel {
+  padding: 9px 28px 9px 11px; border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-m); font-size: .84rem;
+  background: var(--white); color: var(--gray-900);
+  outline: none; cursor: pointer; min-width: 108px;
+  transition: var(--t);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%236b8fa8' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 9px center;
+  appearance: none; -webkit-appearance: none;
+}
+.filter-sel:focus { border-color: var(--blue-500); box-shadow: 0 0 0 3px rgba(37,113,173,.12); }
+.filter-acts { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+
+/* =============================================================
+   TABLE
+============================================================= */
+.tbl-wrap { overflow-x: auto; }
+.data-tbl { width: 100%; border-collapse: collapse; font-size: .875rem; }
+.data-tbl thead tr {
+  background: linear-gradient(90deg, var(--blue-900), var(--blue-700));
+}
+.data-tbl thead th {
+  padding: 11px 15px; text-align: left;
+  font-size: .67rem; font-weight: 700;
+  color: rgba(255,255,255,.88);
+  letter-spacing: .07em; text-transform: uppercase;
+  white-space: nowrap;
+}
+.data-tbl tbody tr {
+  border-bottom: 1px solid var(--gray-200);
+  transition: background .1s;
+}
+.data-tbl tbody tr:last-child { border-bottom: none; }
+.data-tbl tbody tr:hover { background: var(--blue-50); }
+.data-tbl tbody tr.row-new { animation: rowFlash .5s ease; }
+@keyframes rowFlash { from { background: var(--green-100); } to { background: transparent; } }
+.data-tbl td { padding: 11px 15px; vertical-align: middle; }
+.col-no { width: 42px; color: var(--gray-300); font-size: .74rem; font-weight: 600; }
+.col-name { font-weight: 600; color: var(--gray-900); }
+.col-act { white-space: nowrap; text-align: right; }
+.rt-pill {
+  display: inline-block; padding: 3px 10px; border-radius: 16px;
+  font-size: .7rem; font-weight: 700;
+  background: var(--blue-50); color: var(--blue-700); letter-spacing: .03em;
+}
+.lock-ico { color: var(--gray-300); font-size: .78rem; }
+
+/* Skeleton loader */
+.skeleton { background: linear-gradient(90deg, #e8eef5 25%, #f4f7fb 50%, #e8eef5 75%); background-size: 200% 100%; animation: shimmer 1.3s infinite; border-radius: 5px; height: 13px; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+.tbl-empty { padding: 54px 20px; text-align: center; color: var(--gray-300); }
+.tbl-empty .empty-ico { font-size: 3rem; margin-bottom: 12px; }
+.tbl-empty p { font-size: .85rem; line-height: 1.7; color: var(--gray-500); }
+
+.tbl-footer {
+  padding: 10px 16px; background: var(--gray-50);
+  border-top: 1px solid var(--gray-200);
+  display: flex; justify-content: space-between;
+  align-items: center; font-size: .76rem; color: var(--gray-500);
+  gap: 8px; flex-wrap: wrap;
+}
+
+/* =============================================================
+   MODALS
+============================================================= */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(5px);
+  z-index: 900; display: none;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.overlay.on { display: flex; }
+.modal {
+  background: var(--white); border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-3); width: 100%; max-width: 390px;
+  padding: 26px; animation: modalIn .2s ease;
+}
+@keyframes modalIn { from { transform: scale(.93) translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+.modal-ico {
+  width: 50px; height: 50px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin: 0 auto 14px;
+}
+.modal h3 { text-align: center; font-size: 1rem; font-weight: 700; margin-bottom: 7px; }
+.modal .sub {
+  text-align: center; color: var(--gray-500); font-size: .83rem;
+  line-height: 1.6; margin-bottom: 20px;
+}
+.modal .sub.left { text-align: left; }
+.hl { font-weight: 700; color: var(--red-500); }
+.modal-form { display: flex; flex-direction: column; gap: 13px; margin-bottom: 18px; }
+.modal-acts { display: flex; gap: 9px; }
+.modal-acts .btn { flex: 1; }
+.login-err {
+  font-size: .76rem; color: var(--red-500); font-weight: 600;
+  text-align: center; display: none; margin-bottom: 12px;
+}
+
+/* =============================================================
+   TOAST
+============================================================= */
+.toast-stack {
+  position: fixed; bottom: 20px; right: 20px;
+  z-index: 9999; display: flex; flex-direction: column;
+  gap: 8px; pointer-events: none;
+}
+.toast {
+  padding: 11px 16px; border-radius: var(--radius-m);
+  font-size: .82rem; font-weight: 600;
+  box-shadow: var(--shadow-3); max-width: 320px;
+  pointer-events: all; animation: toastIn .24s ease;
+  display: flex; align-items: center; gap: 8px; color: #fff;
+}
+.toast.success { background: #053d2a; border-left: 4px solid var(--green-500); }
+.toast.error   { background: #6b1717; border-left: 4px solid var(--red-500); }
+.toast.warn    { background: #783000; border-left: 4px solid var(--amber-500); }
+.toast.info    { background: var(--blue-800); border-left: 4px solid #7eb8e8; }
+@keyframes toastIn  { from { transform: translateX(44px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes toastOut { to   { transform: translateX(44px); opacity: 0; } }
+
+/* =============================================================
+   PRINT — Professional A4
+============================================================= */
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  /* Hide screen-only elements */
+  .site-header, #adminBar, .status-bar, .admin-panel,
+  #formCard, .filter-bar, .filter-acts, .col-act,
+  .tbl-footer, .year-tabs, .toast-stack,
+  .card:not(#tableCard) { display: none !important; }
+
+  body { background: #fff; font-size: 9.5pt; font-family: 'Plus Jakarta Sans', Arial, sans-serif; color: #000; }
+  main { padding: 0; max-width: 100%; }
+  #tableCard { box-shadow: none !important; border: none !important; border-radius: 0 !important; margin: 0; }
+  .tbl-wrap { overflow: visible; }
+
+  /* Print header */
+  .print-header  { display: block !important; }
+  .ph-banner {
+    text-align: center; padding-bottom: 12px; margin-bottom: 14px;
+    border-bottom: 3px double #1a4f7a;
+  }
+  .ph-mosque { font-size: 11pt; font-weight: 600; color: #1a4f7a; letter-spacing: .05em; text-transform: uppercase; }
+  .ph-title  { font-family: 'Amiri', serif; font-size: 16pt; font-weight: 700; color: #0b2e50; margin: 3px 0; }
+  .ph-year   { font-size: 10pt; font-weight: 700; color: #1a4f7a; }
+  .ph-meta {
+    display: flex !important; justify-content: space-between;
+    font-size: 7.5pt; color: #446680;
+    background: #eef6ff; padding: 6px 12px;
+    border: 1px solid #d1e4f2; border-radius: 4px;
+    margin-bottom: 16px;
+  }
+
+  /* Table */
+  .data-tbl { width: 100%; border-collapse: collapse; }
+  .data-tbl thead tr { background: #1a4f7a !important; }
+  .data-tbl thead th { padding: 8px 12px; color: #fff !important; font-size: 8pt; border: 1px solid #1a4f7a; }
+  .data-tbl tbody tr { border-bottom: 1px solid #d1e4f2; page-break-inside: avoid; }
+  .data-tbl tbody tr:nth-child(even) { background: #f4f8fd !important; }
+  .data-tbl tbody tr:hover { background: inherit; }
+  .data-tbl td { padding: 6px 12px; border-left: 1px solid #e3eff8; border-right: 1px solid #e3eff8; }
+  .col-no { color: #88aec8; font-size: 8pt; }
+  .rt-pill { background: #e8f2fb !important; color: #1a4f7a !important; padding: 1px 7px; font-size: 7.5pt; }
+
+  /* Rekap */
+  .print-rekap { display: block !important; page-break-inside: avoid; padding: 0 1px; }
+  .pr-title {
+    font-size: 8pt; font-weight: 700; color: #1a4f7a; text-transform: uppercase;
+    letter-spacing: .05em; margin: 18px 0 8px;
+    padding-top: 14px; border-top: 1.5px solid #1a4f7a;
+  }
+  .pr-tbl { border-collapse: collapse; font-size: 9pt; }
+  .pr-tbl th { background: #1a4f7a !important; color: #fff !important; padding: 5px 14px; font-size: 8pt; }
+  .pr-tbl td { padding: 5px 14px; border: 1px solid #d1e4f2; }
+  .pr-tbl tr:nth-child(even) td { background: #f4f8fd; }
+  .pr-tbl .pr-tot td { background: #dbeeff !important; font-weight: 700; }
+
+  /* Signature & footer */
+  .print-sign { display: flex !important; justify-content: flex-end; margin-top: 32px; }
+  .sign-box { text-align: center; font-size: 8pt; }
+  .sign-line { margin-top: 48px; border-top: 1px solid #555; padding-top: 4px; width: 170px; }
+  .print-foot {
+    display: flex !important; justify-content: space-between;
+    font-size: 7.5pt; color: #88aec8;
+    margin-top: 18px; padding-top: 9px; border-top: 1px solid #d1e4f2;
+  }
+}
+.print-header, .print-rekap, .print-sign, .print-foot, .ph-meta { display: none; }
+
+/* =============================================================
+   RESPONSIVE
+============================================================= */
+@media (max-width: 768px) {
+  .header-wrap { padding: 11px 14px; }
+  .header-text h1 { font-size: 1.05rem; }
+  .year-chip { display: none; }
+  main { padding: 14px 12px 64px; }
+  .card-body { padding: 14px; }
+  .card-head { padding: 12px 16px; }
+  .stats-grid { padding: 12px 14px; grid-template-columns: repeat(2, 1fr); }
+  .filter-bar { padding: 10px 13px; }
+  .data-tbl thead th, .data-tbl td { padding: 9px 11px; }
+  .filter-acts { margin-left: 0; }
+  .toast-stack { bottom: 14px; right: 12px; left: 12px; }
+  .toast { max-width: 100%; }
+}
+@media (max-width: 500px) {
+  .modal { padding: 20px 16px; }
+  .ap-grid { padding: 14px 14px; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+  HEADER
+================================================================ -->
+<header class="site-header">
+  <div class="header-wrap">
+    <img src="https://i.ibb.co.com/W4rmSh0f/white-mnf2.png" alt="MNF" style="width:38px;height:38px;filter:drop-shadow(0 1px 4px rgba(201,162,39,.35))">
+    <div class="header-text">
+      <h1>Musholla Nurul Falah</h1>
+      <p>Sistem Manajemen Data Mustahik Qurban</p>
+    </div>
+    <div class="header-right">
+      <div class="year-chip" id="yearChip">— H</div>
+      <button class="admin-toggle" id="adminToggle" onclick="Auth.toggleLogin()">
+        <span class="admin-dot" id="adminDot"></span>
+        <span id="adminToggleLabel">Login Admin</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ADMIN NOTICE BAR -->
+<div id="adminBar">
+  <span>🔐 Mode Admin Aktif</span>
+  <div class="admin-bar-right">
+    <span class="session-chip" id="sessionChip"></span>
+    <button class="btn btn-sm btn-ghost" id="panelToggleBtn" onclick="UI.togglePanel()"
+      style="color:#a7f3d0;border-color:rgba(255,255,255,.2)">⚙️ Panel Admin</button>
+    <button class="btn btn-sm btn-ghost" onclick="Auth.logout()"
+      style="color:#fca5a5;border-color:rgba(255,255,255,.2)">Keluar</button>
+  </div>
+</div>
+
+<!-- ================================================================
+  MAIN
+================================================================ -->
+<main>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="status-dot syncing" id="statusDot"></div>
+    <span id="statusMsg">Menghubungkan...</span>
+    <span class="badge-offline" id="offlineBadge">⚠ Offline</span>
+    <span class="sync-time" id="syncTime"></span>
+  </div>
+
+  <!-- REKAP STATS -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-ico">📊</div>
+      <div class="card-lbl">Rekap Mustahik</div>
+      <div class="year-tabs" id="yearTabs"></div>
+    </div>
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card primary">
+        <div class="stat-num">0</div>
+        <div class="stat-lbl">Total</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM INPUT (selalu tampil) -->
+  <div class="card" id="formCard">
+    <div class="card-head">
+      <div class="card-ico">➕</div>
+      <div class="card-lbl">Tambah Data Mustahik</div>
+    </div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="fld">
+          <label for="inputNama">Nama Mustahik</label>
+          <input type="text" id="inputNama" placeholder="Nama lengkap..." autocomplete="off" maxlength="80">
+          <div class="ferr" id="errNama"></div>
+        </div>
+        <div class="fld">
+          <label for="inputRT">RT</label>
+          <select id="inputRT"><option value="">— Pilih RT —</option></select>
+          <div class="ferr" id="errRT"></div>
+        </div>
+        <div class="fld">
+          <label for="inputTahun">Tahun</label>
+          <select id="inputTahun"></select>
+        </div>
+        <button class="btn btn-primary" id="btnSave" onclick="DataMgr.submit()">
+          <span id="btnSaveLbl">💾 Simpan</span>
+          <span id="btnSaveSpin" style="display:none"><span class="spinner"></span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div class="card admin-panel" id="adminPanel">
+    <div class="card-head">
+      <div class="card-ico">⚙️</div>
+      <div class="card-lbl">Panel Admin</div>
+      <span style="margin-left:auto;font-size:.69rem;color:var(--gray-300)">
+        v<span id="versionTag"></span> &nbsp;·&nbsp; <span id="totalCount">0</span> data
+      </span>
+    </div>
+    <div class="ap-grid">
+
+      <!-- Kelola Tahun -->
+      <div class="ap-sect">
+        <h4>🗓 Kelola Tahun</h4>
+        <div class="year-pills" id="yearPills"></div>
+        <div class="add-year">
+          <input type="text" id="newYearInput" placeholder="cth: 1448" maxlength="4"
+            onkeydown="if(event.key==='Enter')YearMgr.add()">
+          <button class="btn btn-sm btn-primary" onclick="YearMgr.add()">+ Tambah</button>
+        </div>
+        <div class="ferr" id="errYear" style="margin-top:6px"></div>
+      </div>
+
+      <!-- Import Data -->
+      <div class="ap-sect">
+        <h4>📤 Import Data CSV</h4>
+        <label class="drop-zone" id="dropZone"
+          ondragover="Importer.dragOver(event)" ondragleave="Importer.dragLeave(event)" ondrop="Importer.drop(event)">
+          <input type="file" id="importFile" accept=".csv,.txt" onchange="Importer.handleFile(event)">
+          <div id="dropZoneText">📂 Klik atau seret file CSV ke sini</div>
+        </label>
+        <div class="import-preview" id="importPreview"></div>
+        <div class="ferr" id="errImport"></div>
+        <p class="import-note">
+          Format: <code>Nama,RT,Tahun</code> per baris<br>
+          Contoh: <code>Ahmad Suryadi,RT 01,1446</code>
+        </p>
+        <div class="import-actions">
+          <button class="btn btn-sm btn-success" id="btnImport" onclick="Importer.execute()" disabled>📤 Import</button>
+          <button class="btn btn-sm btn-ghost" onclick="Importer.clear()">✕ Reset</button>
+          <button class="btn btn-sm btn-outline" onclick="Exporter.template()">📄 Template</button>
+        </div>
+      </div>
+
+      <!-- Export -->
+      <div class="ap-sect">
+        <h4>📥 Export Data</h4>
+        <div class="export-list">
+          <button class="btn btn-sm btn-primary" onclick="Exporter.allYears()">📥 Excel — Semua Tahun</button>
+          <button class="btn btn-sm btn-outline" onclick="Exporter.activeYear()">📥 Excel — Tahun Aktif</button>
+          <button class="btn btn-sm btn-outline" onclick="Exporter.perRT()">📥 Excel — Per RT</button>
+          <hr>
+          <button class="btn btn-sm btn-ghost" onclick="Printer.open()">🖨 Cetak / Print</button>
+        </div>
+      </div>
+
+      <!-- Audit Log -->
+      <div class="ap-sect">
+        <h4>📋 Riwayat Aktivitas</h4>
+        <div class="audit-list" id="auditList">
+          <div class="audit-empty">Belum ada aktivitas.</div>
+        </div>
+        <button class="btn btn-xs btn-ghost" style="margin-top:9px" onclick="Audit.clear()">🗑 Bersihkan log</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DATA TABLE -->
+  <div class="card" id="tableCard">
+
+    <!-- Print-only header -->
+    <div class="print-header">
+      <div class="ph-banner">
+        <img src="https://i.ibb.co.com/KpLTpmnn/logo-mnf-new-ijo.png" alt="MNF" style="width:80px; float:left; margin-right: 15px;">
+        <div class="ph-title">Musholla Nurul Falah</div>
+        <div class="ph-mosque">Data Mustahik Qurban</div>
+        <div class="ph-year" id="phYear"></div>
+      </div>
+      <div class="ph-meta" id="phMeta"></div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="search-box">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Cari nama mustahik..." oninput="UI.renderTable()">
+      </div>
+      <select class="filter-sel" id="filterRT" onchange="UI.renderTable()">
+        <option value="">Semua RT</option>
+      </select>
+      <select class="filter-sel" id="filterTahun" onchange="UI.onYearChange()">
+        <option value="">Semua Tahun</option>
+      </select>
+      <div class="filter-acts">
+        <button class="btn btn-sm btn-primary" onclick="Exporter.allYears()">📥 Excel</button>
+        <button class="btn btn-sm btn-outline" onclick="Printer.open()">🖨 Print</button>
+        <button class="btn btn-sm btn-ghost" onclick="DataMgr.load()" title="Refresh data">🔄</button>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table class="data-tbl">
+        <thead>
+          <tr>
+            <th class="col-no">No</th>
+            <th>Nama Mustahik</th>
+            <th id="thLast">RT</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td><div class="skeleton" style="width:20px"></div></td><td><div class="skeleton" style="width:55%"></div></td><td><div class="skeleton" style="width:50px"></div></td></tr>
+          <tr><td><div class="skeleton" style="width:20px"></div></td><td><div class="skeleton" style="width:70%"></div></td><td><div class="skeleton" style="width:50px"></div></td></tr>
+          <tr><td><div class="skeleton" style="width:20px"></div></td><td><div class="skeleton" style="width:45%"></div></td><td><div class="skeleton" style="width:50px"></div></td></tr>
+        </tbody>
+      </table>
+
+      <!-- Print rekap (print-only) -->
+      <div class="print-rekap" id="printRekap">
+        <div class="pr-title">Rekap Per RT</div>
+        <table class="pr-tbl" id="prTable">
+          <thead><tr><th>RT</th><th>Jumlah</th></tr></thead>
+          <tbody id="prBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tbl-footer">
+      <span id="tblInfo">Memuat data...</span>
+      <span id="filterInfo" style="color:var(--gray-300)"></span>
+    </div>
+
+    <!-- Print footer -->
+    <div class="print-foot" id="printFoot"></div>
+    <div class="print-sign">
+      <div class="sign-box">
+        <div>Ketua Panitia Qurban,</div>
+        <div class="sign-line">( ________________________________ )</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ================================================================
+  MODALS
+================================================================ -->
+
+<!-- Delete Data -->
+<div class="overlay" id="modalDelete">
+  <div class="modal">
+    <div class="modal-ico" style="background:var(--red-100)">🗑️</div>
+    <h3>Hapus Data?</h3>
+    <p class="sub">Yakin hapus <span class="hl" id="deleteTargetName"></span>?
+      Data tidak dapat dipulihkan setelah dihapus.</p>
+    <div class="modal-acts">
+      <button class="btn btn-ghost" onclick="UI.closeModal('modalDelete')">Batal</button>
+      <button class="btn btn-danger" id="btnConfirmDelete" onclick="DataMgr.confirmDelete()">🗑 Hapus</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Data -->
+<div class="overlay" id="modalEdit">
+  <div class="modal">
+    <div class="modal-ico" style="background:var(--blue-50)">✏️</div>
+    <h3 style="text-align:left">Edit Data Mustahik</h3>
+    <input type="hidden" id="editId">
+    <input type="hidden" id="editOrigName">
+    <input type="hidden" id="editOrigYear">
+    <div class="modal-form">
+      <div class="fld"><label>Nama Mustahik</label>
+        <input type="text" id="editNama" maxlength="80">
+        <div class="ferr" id="errEditNama"></div>
+      </div>
+      <div class="fld"><label>RT</label><select id="editRT"></select></div>
+      <div class="fld"><label>Tahun</label><select id="editTahun"></select></div>
+    </div>
+    <div class="modal-acts">
+      <button class="btn btn-ghost" onclick="UI.closeModal('modalEdit')">Batal</button>
+      <button class="btn btn-primary" id="btnConfirmEdit" onclick="DataMgr.confirmEdit()">
+        <span id="editBtnLbl">💾 Simpan</span>
+        <span id="editBtnSpin" style="display:none"><span class="spinner"></span></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Login Admin -->
+<div class="overlay" id="modalLogin">
+  <div class="modal" style="max-width:330px">
+    <div class="modal-ico" style="background:var(--blue-50)">🔐</div>
+    <h3>Login Admin</h3>
+    <p class="sub">Masukkan password untuk mengakses fitur manajemen data.</p>
+    <div class="modal-form">
+      <div class="fld">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="••••••••"
+          onkeydown="if(event.key==='Enter')Auth.login()">
+      </div>
+    </div>
+    <div class="login-err" id="loginErr">❌ Password salah. Coba lagi.</div>
+    <div class="modal-acts">
+      <button class="btn btn-ghost" onclick="UI.closeModal('modalLogin')">Batal</button>
+      <button class="btn btn-primary" onclick="Auth.login()">Masuk →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Year -->
+<div class="overlay" id="modalDelYear">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-ico" style="background:var(--red-100)">⚠️</div>
+    <h3>Hapus Tahun?</h3>
+    <p class="sub">Hapus tahun <span class="hl" id="delYearName"></span>?
+      Semua data mustahik tahun ini akan terhapus permanen.</p>
+    <div class="modal-acts">
+      <button class="btn btn-ghost" onclick="UI.closeModal('modalDelYear')">Batal</button>
+      <button class="btn btn-danger" onclick="YearMgr.confirmDelete()">🗑 Hapus Tahun</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-stack" id="toastStack"></div>
+
+<!-- ================================================================
+  SCRIPT
+================================================================ -->
+<script>
+'use strict';
+
+/* ====================================================================
+   APP — Configuration (edit section ini untuk kustomisasi)
+===================================================================== */
+const APP = Object.freeze({
+  VERSION:         '4.0.0',
+  NAME:            'Musholla Nurul Falah',
+  GAS_URL:         'https://script.google.com/macros/s/AKfycbzQKOnPmd8sMnyLwB6_cSde00nwdYRuMcGiTJyKL7EwYV4DEyDgOaoM7r3rgkhZ-K8PmA/exec',
+  ADMIN_PASS:      'PQMNF2026',      // ← Ganti password admin
+  SESSION_MINUTES: 60,               // Auto-logout admin setelah X menit
+  RT_LIST:         ['RT 10/04','RT 03/04','RT 04/04','RT 02/03','RT 03/03'],
+  DEFAULT_YEARS:   ['1447'],
+  MAX_AUDIT:       150,
+  API_TIMEOUT:     12000,            // ms
+  API_RETRIES:     3,
+  RETRY_DELAY:     2500,             // ms
+  REFRESH_INTERVAL:5 * 60 * 1000,   // Auto-refresh 5 menit
+  STORE: {
+    data:  'mnf_data_v4',
+    years: 'mnf_years_v4',
+    audit: 'mnf_audit_v4',
+    sync:  'mnf_sync_v4',
+    queue: 'mnf_queue_v4',
+  },
+});
+
+/* ====================================================================
+   STATE — Single source of truth
+===================================================================== */
+const S = {
+  data:        [],
+  years:       [...APP.DEFAULT_YEARS],
+  activeYear:  APP.DEFAULT_YEARS[0],
+  isOnline:    false,
+  isAdmin:     false,
+  panelOpen:   false,
+  delTarget:   null,
+  delYear:     null,
+  importRows:  [],
+  sessionEnd:  null,
+  sessionTimer:null,
+  highlightId: null,
+};
+
+/* ====================================================================
+   STORE — localStorage wrapper
+===================================================================== */
+const Store = {
+  get(key, fallback = null) {
+    try { const v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : fallback; }
+    catch { return fallback; }
+  },
+  set(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch { toast('⚠ Penyimpanan lokal penuh', 'warn'); return false; }
+  },
+  saveData()  { this.set(APP.STORE.data,  S.data); },
+  saveYears() { this.set(APP.STORE.years, S.years); },
+  saveAudit() { this.set(APP.STORE.audit, Audit.log); },
+};
+
+/* ====================================================================
+   HELPERS
+===================================================================== */
+const genId  = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const esc    = s  => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const capName = s => s.trim().replace(/\b(\w)(\S*)/g, (_, a, b) => a.toUpperCase() + b.toLowerCase());
+const fmtDate = d => new Date(d).toLocaleString('id-ID', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'});
+const today   = () => new Date().toLocaleDateString('id-ID', {day:'2-digit', month:'long', year:'numeric'});
+const sortRT  = list => list.sort((a,b) => (parseInt(a.replace(/\D/g,''))||0) - (parseInt(b.replace(/\D/g,''))||0));
+
+function isDuplicate(nama, tahun, excludeId = null) {
+  return S.data.some(d =>
+    d.nama.toLowerCase() === nama.toLowerCase() &&
+    (d.tahun || APP.DEFAULT_YEARS[0]) === tahun &&
+    d.id !== excludeId
+  );
+}
+
+function toast(msg, type = 'info', dur = 4000) {
+  const stack = document.getElementById('toastStack');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  stack.appendChild(el);
+  setTimeout(() => {
+    el.style.animation = 'toastOut .26s ease forwards';
+    setTimeout(() => el.remove(), 280);
+  }, dur);
+}
+
+/* ====================================================================
+   AUDIT LOG
+===================================================================== */
+const Audit = {
+  log: [],
+
+  init() { this.log = Store.get(APP.STORE.audit, []); },
+
+  add(type, msg) {
+    this.log.unshift({ ts: new Date().toISOString(), type, msg });
+    if (this.log.length > APP.MAX_AUDIT) this.log.length = APP.MAX_AUDIT;
+    Store.saveAudit();
+    if (S.isAdmin && S.panelOpen) this.render();
+  },
+
+  render() {
+    const el = document.getElementById('auditList');
+    if (!el) return;
+    if (!this.log.length) { el.innerHTML = '<div class="audit-empty">Belum ada aktivitas.</div>'; return; }
+    el.innerHTML = this.log.map(e => {
+      const t = fmtDate(e.ts);
+      return `<div class="audit-item">
+        <span class="audit-tag ${e.type}">${e.type.toUpperCase()}</span>
+        <span class="audit-msg">${esc(e.msg)}</span>
+        <span class="audit-time">${t}</span>
+      </div>`;
+    }).join('');
+  },
+
+  clear() {
+    if (!confirm('Hapus semua riwayat aktivitas?')) return;
+    this.log = []; Store.saveAudit(); this.render();
+    toast('Log aktivitas dibersihkan', 'info');
+  },
+};
+
+/* ====================================================================
+   YEAR MANAGER
+===================================================================== */
+const YearMgr = {
+  init() {
+    S.years = Store.get(APP.STORE.years, [...APP.DEFAULT_YEARS]);
+    if (!S.years.length) S.years = [...APP.DEFAULT_YEARS];
+    S.activeYear = S.years[0];
+    this.rebuildSelects();
+  },
+
+  rebuildSelects() {
+    // Year tabs
+    const tabs = document.getElementById('yearTabs');
+    tabs.innerHTML = S.years.map(y =>
+      `<button class="ytab${y===S.activeYear?' on':''}" id="ytab${y}" onclick="YearMgr.setActive('${y}')">${y} H</button>`
+    ).join('');
+    document.getElementById('yearChip').textContent = S.activeYear + ' H';
+
+    // Dropdowns
+    const yearOpts = S.years.map(y => `<option value="${y}">${y} H</option>`).join('');
+    ['inputTahun','editTahun'].forEach(id => {
+      const el = document.getElementById(id); if (!el) return;
+      const cur = el.value;
+      el.innerHTML = yearOpts;
+      el.value = S.years.includes(cur) ? cur : S.activeYear;
+    });
+    const fThn = document.getElementById('filterTahun');
+    const curF = fThn.value;
+    fThn.innerHTML = '<option value="">Semua Tahun</option>' + yearOpts;
+    fThn.value = S.years.includes(curF) ? curF : S.activeYear;
+
+    // RT dropdowns
+    const rtOpts = APP.RT_LIST.map(r => `<option value="${r}">${r}</option>`).join('');
+    ['inputRT','editRT'].forEach(id => {
+      const el = document.getElementById(id); if (!el) return;
+      const cur = el.value;
+      el.innerHTML = `<option value="">— Pilih RT —</option>` + rtOpts;
+      if (cur) el.value = cur;
+    });
+    document.getElementById('filterRT').innerHTML = '<option value="">Semua RT</option>' + rtOpts;
+  },
+
+  setActive(y) {
+    S.activeYear = y;
+    document.getElementById('yearChip').textContent = y + ' H';
+    document.querySelectorAll('.ytab').forEach(b => b.classList.toggle('on', b.id === 'ytab'+y));
+    document.getElementById('filterTahun').value = y;
+    UI.renderTable();
+    UI.updateStats();
+  },
+
+  add() {
+    const v = document.getElementById('newYearInput').value.trim();
+    const errEl = document.getElementById('errYear');
+    errEl.style.display = 'none';
+    if (!/^\d{4}$/.test(v)) { errEl.textContent = 'Format tahun tidak valid (4 digit angka)'; errEl.style.display='block'; return; }
+    if (S.years.includes(v)) { errEl.textContent = 'Tahun ' + v + ' sudah ada'; errEl.style.display='block'; return; }
+    S.years.push(v); S.years.sort();
+    Store.saveYears();
+    this.rebuildSelects(); this.renderPills();
+    document.getElementById('newYearInput').value = '';
+    Audit.add('sys', 'Tahun ' + v + ' H ditambahkan');
+    toast('🗓 Tahun ' + v + ' H ditambahkan', 'success');
+  },
+
+  askDelete(y) {
+    S.delYear = y;
+    document.getElementById('delYearName').textContent = y + ' H';
+    UI.openModal('modalDelYear');
+  },
+
+  confirmDelete() {
+    const y = S.delYear; if (!y) return;
+    const cnt = S.data.filter(d => (d.tahun || APP.DEFAULT_YEARS[0]) === y).length;
+    S.data = S.data.filter(d => (d.tahun || APP.DEFAULT_YEARS[0]) !== y);
+    S.years = S.years.filter(yy => yy !== y);
+    if (S.activeYear === y) S.activeYear = S.years[0] || '';
+    Store.saveData(); Store.saveYears();
+    this.rebuildSelects(); this.renderPills();
+    UI.renderTable(); UI.updateStats();
+    UI.closeModal('modalDelYear'); S.delYear = null;
+    Audit.add('del', `Tahun ${y} H dihapus (${cnt} data)`);
+    toast(`🗑 Tahun ${y} H dan ${cnt} data dihapus`, 'success');
+    if (S.isOnline && Api.isConfigured()) Api.post({ action:'deleteYear', tahun:y }).catch(()=>{});
+  },
+
+  renderPills() {
+    const el = document.getElementById('yearPills'); if (!el) return;
+    if (!S.years.length) { el.innerHTML = '<span style="color:var(--gray-300);font-size:.75rem">Belum ada tahun.</span>'; return; }
+    el.innerHTML = S.years.map(y => `
+      <span class="year-pill${y===S.activeYear?' current':''}">
+        ${y} H
+        <button class="year-pill-del" onclick="YearMgr.askDelete('${y}')" title="Hapus tahun ${y}">✕</button>
+      </span>`).join('');
+  },
+};
+
+/* ====================================================================
+   AUTHENTICATION
+===================================================================== */
+const Auth = {
+  toggleLogin() {
+    if (S.isAdmin) { this.logout(); return; }
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginErr').style.display = 'none';
+    UI.openModal('modalLogin');
+    setTimeout(() => document.getElementById('loginPass').focus(), 180);
+  },
+
+  login() {
+    const pass = document.getElementById('loginPass').value;
+    if (pass === APP.ADMIN_PASS) {
+      S.isAdmin = true;
+      S.sessionEnd = Date.now() + APP.SESSION_MINUTES * 60 * 1000;
+      UI.closeModal('modalLogin');
+      document.getElementById('loginPass').value = '';
+      document.getElementById('loginErr').style.display = 'none';
+      UI.applyAdmin();
+      this._startTimer();
+      Audit.add('sys', 'Admin login berhasil');
+      toast('✅ Selamat datang, Admin!', 'success');
+    } else {
+      document.getElementById('loginErr').style.display = 'block';
+      document.getElementById('loginPass').value = '';
+      document.getElementById('loginPass').focus();
+      Audit.add('sys', 'Percobaan login gagal');
+    }
+  },
+
+  logout() {
+    clearInterval(S.sessionTimer);
+    S.isAdmin = false; S.panelOpen = false;
+    UI.applyAdmin();
+    UI.renderTable();
+    Audit.add('sys', 'Admin logout');
+    toast('👋 Sesi admin diakhiri', 'info');
+  },
+
+  _startTimer() {
+    clearInterval(S.sessionTimer);
+    S.sessionTimer = setInterval(() => {
+      const rem = S.sessionEnd - Date.now();
+      if (rem <= 0) { this.logout(); toast('⏱ Sesi admin habis, silakan login ulang', 'warn'); return; }
+      const m = Math.floor(rem / 60000);
+      const s = Math.floor((rem % 60000) / 1000);
+      const el = document.getElementById('sessionChip');
+      if (el) el.textContent = `Sesi: ${m}:${String(s).padStart(2,'0')}`;
+    }, 1000);
+  },
+};
+
+/* ====================================================================
+   API LAYER — with retry & offline queue
+===================================================================== */
+const Api = {
+  isConfigured() { return APP.GAS_URL !== 'GANTI_DENGAN_URL_GOOGLE_APPS_SCRIPT_DISINI'; },
+
+  async get(params) {
+    if (!this.isConfigured()) throw new Error('GAS URL belum dikonfigurasi');
+    const url = new URL(APP.GAS_URL);
+    Object.entries(params).forEach(([k, v]) => url.searchParams.append(k, v));
+    return this._fetch(() => fetch(url.toString(), { signal: AbortSignal.timeout(APP.API_TIMEOUT) }));
+  },
+
+  async post(params) {
+    if (!this.isConfigured()) throw new Error('GAS URL belum dikonfigurasi');
+    return this._fetch(() => fetch(APP.GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(params).toString(),
+      signal: AbortSignal.timeout(APP.API_TIMEOUT),
+    }));
+  },
+
+  async _fetch(fetchFn, retries = APP.API_RETRIES) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const r = await fetchFn();
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const j = await r.json();
+        if (j.status === 'error') throw new Error(j.message || 'Server error');
+        return j;
+      } catch (e) {
+        if (i === retries - 1) throw e;
+        await new Promise(res => setTimeout(res, APP.RETRY_DELAY));
+      }
+    }
+  },
+
+  enqueue(params) {
+    const q = Store.get(APP.STORE.queue, []);
+    q.push(params);
+    Store.set(APP.STORE.queue, q);
+  },
+
+  async flushQueue() {
+    if (!S.isOnline) return;
+    const q = Store.get(APP.STORE.queue, []);
+    if (!q.length) return;
+    let ok = 0;
+    for (const p of q) {
+      try { await this.post(p); ok++; } catch {}
+    }
+    if (ok > 0) {
+      Store.set(APP.STORE.queue, []);
+      await DataMgr.load();
+      toast(`☁️ ${ok} perubahan offline berhasil disinkronkan`, 'success');
+    }
+  },
+};
+
+/* ====================================================================
+   DATA MANAGER
+===================================================================== */
+const DataMgr = {
+
+  async load() {
+    UI.setStatus('syncing', 'Memuat data...');
+    UI.showSkeleton();
+
+    if (!Api.isConfigured()) {
+      S.isOnline = false;
+      S.data = Store.get(APP.STORE.data, []);
+      document.getElementById('offlineBadge').style.display = 'inline';
+      UI.setStatus('offline', 'Mode offline — URL GAS belum dikonfigurasi');
+      this._afterLoad();
+      toast('⚠ Mode offline: data tersimpan lokal', 'warn');
+      return;
+    }
+
+    try {
+      const res = await Api.get({ action: 'getAll' });
+      S.data = res.data || [];
+      S.isOnline = true;
+      Store.saveData();
+      Store.set(APP.STORE.sync, new Date().toISOString());
+      document.getElementById('offlineBadge').style.display = 'none';
+      UI.setStatus('online', `Terhubung · ${S.data.length} data`);
+      UI.updateSyncTime();
+      await Api.flushQueue();
+    } catch (e) {
+      S.isOnline = false;
+      S.data = Store.get(APP.STORE.data, []);
+      document.getElementById('offlineBadge').style.display = 'inline';
+      UI.setStatus('offline', 'Tidak terhubung · menampilkan data lokal');
+      toast('⚠ Offline · data lokal ditampilkan', 'warn');
+    }
+    this._afterLoad();
+  },
+
+  _afterLoad() {
+    UI.renderTable(); UI.updateStats();
+    document.getElementById('totalCount').textContent = S.data.length;
+  },
+
+  async submit() {
+    const nEl   = document.getElementById('inputNama');
+    const rtEl  = document.getElementById('inputRT');
+    const thnEl = document.getElementById('inputTahun');
+    const nama  = nEl.value.trim();
+    const rt    = rtEl.value;
+    // Fallback: pakai activeYear jika dropdown tahun kosong
+    const thn   = thnEl.value || S.activeYear || APP.DEFAULT_YEARS[0];
+
+    // Clear errors
+    ['errNama','errRT'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.style.display = 'none'; el.textContent = ''; }
+    });
+    nEl.classList.remove('err');
+
+    // Validasi
+    let valid = true;
+    if (!nama) {
+      showErr('errNama', 'Nama tidak boleh kosong');
+      nEl.classList.add('err'); valid = false;
+    }
+    if (!rt) {
+      showErr('errRT', 'Pilih RT terlebih dahulu'); valid = false;
+    }
+    if (valid && isDuplicate(capName(nama), thn)) {
+      showErr('errNama', `"${capName(nama)}" sudah terdaftar di ${thn} H`);
+      nEl.classList.add('err'); valid = false;
+    }
+    if (!valid) return;
+
+    setLoading('btnSave', 'btnSaveLbl', 'btnSaveSpin', true);
+
+    const item = {
+      id:        genId(),
+      nama:      capName(nama),
+      rt,
+      tahun:     thn,
+      createdAt: new Date().toISOString()
+    };
+
+    try {
+      // Simpan lokal DULU — data tidak hilang apapun kondisi jaringan
+      S.data.push(item);
+      Store.saveData();
+      S.highlightId = item.id;
+      UI.renderTable();
+      UI.updateStats();
+      nEl.value  = '';
+      rtEl.value = '';
+      document.getElementById('totalCount').textContent = S.data.length;
+      Audit.add('add', `Tambah: ${item.nama} (${rt}, ${thn} H)`);
+      toast(`✅ ${item.nama} berhasil disimpan`, 'success');
+      nEl.focus();
+
+      // Sinkronkan ke server di background (tidak block UI)
+      if (Api.isConfigured()) {
+        if (S.isOnline) {
+          Api.post({ action:'add', nama:item.nama, rt, tahun:thn })
+            .then(res => { if (res && res.id) item.id = res.id; })
+            .catch(() => {
+              Api.enqueue({ action:'add', nama:item.nama, rt, tahun:thn });
+              toast('☁️ Tersimpan lokal, akan sync saat online', 'warn');
+            });
+        } else {
+          Api.enqueue({ action:'add', nama:item.nama, rt, tahun:thn });
+        }
+      }
+    } catch (e) {
+      // Rollback jika ada error tak terduga
+      S.data = S.data.filter(d => d.id !== item.id);
+      Store.saveData();
+      UI.renderTable(); UI.updateStats();
+      toast('❌ Gagal menyimpan: ' + e.message, 'error');
+    } finally {
+      setLoading('btnSave', 'btnSaveLbl', 'btnSaveSpin', false);
+    }
+  },
+
+  openDelete(id) {
+    S.delTarget = id;
+    const d = S.data.find(x => x.id===id);
+    document.getElementById('deleteTargetName').textContent = d ? d.nama + ` (${d.tahun||'?'} H)` : '';
+    UI.openModal('modalDelete');
+  },
+
+  async confirmDelete() {
+    const id = S.delTarget; if (!id) return;
+    const d = S.data.find(x => x.id===id);
+    document.getElementById('btnConfirmDelete').disabled = true;
+    try {
+      if (S.isOnline && Api.isConfigured()) await Api.post({ action:'delete', id });
+      else Api.enqueue({ action:'delete', id });
+      S.data = S.data.filter(x => x.id!==id); Store.saveData();
+      UI.renderTable(); UI.updateStats();
+      document.getElementById('totalCount').textContent = S.data.length;
+      Audit.add('del', `Hapus: ${d?d.nama:'—'} (${d?d.tahun:'?'} H)`);
+      toast(`🗑 ${d?d.nama:'Data'} dihapus`, 'success');
+    } catch (e) { toast('❌ Gagal menghapus: ' + e.message, 'error'); }
+    UI.closeModal('modalDelete'); S.delTarget = null;
+    document.getElementById('btnConfirmDelete').disabled = false;
+  },
+
+  openEdit(id) {
+    const d = S.data.find(x => x.id===id); if (!d) return;
+    document.getElementById('editId').value         = id;
+    document.getElementById('editOrigName').value   = d.nama;
+    document.getElementById('editOrigYear').value   = d.tahun || APP.DEFAULT_YEARS[0];
+    document.getElementById('editNama').value       = d.nama;
+    document.getElementById('editRT').value         = d.rt;
+    document.getElementById('editTahun').value      = d.tahun || APP.DEFAULT_YEARS[0];
+    document.getElementById('errEditNama').style.display = 'none';
+    UI.openModal('modalEdit');
+  },
+
+  async confirmEdit() {
+    const id    = document.getElementById('editId').value;
+    const origN = document.getElementById('editOrigName').value;
+    const origY = document.getElementById('editOrigYear').value;
+    const nama  = document.getElementById('editNama').value.trim();
+    const rt    = document.getElementById('editRT').value;
+    const thn   = document.getElementById('editTahun').value;
+
+    document.getElementById('errEditNama').style.display = 'none';
+    if (!nama) { showErr('errEditNama', 'Nama tidak boleh kosong'); return; }
+    const sameKey = nama.toLowerCase()===origN.toLowerCase() && thn===origY;
+    if (!sameKey && isDuplicate(nama, thn, id)) {
+      showErr('errEditNama', `"${nama}" sudah terdaftar di ${thn} H`); return;
+    }
+
+    setLoading('btnConfirmEdit', 'editBtnLbl', 'editBtnSpin', true);
+    const capN = capName(nama);
+    try {
+      if (S.isOnline && Api.isConfigured()) await Api.post({ action:'update', id, nama:capN, rt, tahun:thn });
+      else Api.enqueue({ action:'update', id, nama:capN, rt, tahun:thn });
+      const i = S.data.findIndex(x => x.id===id);
+      if (i !== -1) { S.data[i].nama=capN; S.data[i].rt=rt; S.data[i].tahun=thn; }
+      Store.saveData();
+      S.highlightId = id;
+      UI.renderTable(); UI.updateStats();
+      Audit.add('edit', `Edit: ${capN} → ${rt}, ${thn} H`);
+      toast('✏️ Data berhasil diperbarui', 'success');
+      UI.closeModal('modalEdit');
+    } catch (e) { toast('❌ Gagal update: ' + e.message, 'error'); }
+    setLoading('btnConfirmEdit', 'editBtnLbl', 'editBtnSpin', false);
+  },
+};
+
+/* ====================================================================
+   IMPORTER
+===================================================================== */
+const Importer = {
+  dragOver(e)  { e.preventDefault(); document.getElementById('dropZone').classList.add('drag'); },
+  dragLeave()  { document.getElementById('dropZone').classList.remove('drag'); },
+  drop(e)      { e.preventDefault(); document.getElementById('dropZone').classList.remove('drag'); const f=e.dataTransfer.files[0]; if(f)this._process(f); },
+  handleFile(e){ const f=e.target.files[0]; if(f)this._process(f); },
+
+  _process(file) {
+    const r = new FileReader();
+    r.onload = e => {
+      const lines = e.target.result.replace(/\r/g,'').split('\n').map(l=>l.trim()).filter(Boolean);
+      // Skip header if present
+      const start = lines[0] && /^nama/i.test(lines[0].split(',')[0]) ? 1 : 0;
+      S.importRows = []; let errs = 0;
+      lines.slice(start).forEach(line => {
+        const p = line.split(',').map(x => x.trim().replace(/^["']|["']$/g,''));
+        const nama  = capName(p[0]||'');
+        const rt    = p[1]||'';
+        const tahun = (p[2]||S.activeYear).replace(/\D/g,'');
+        if (nama && APP.RT_LIST.includes(rt) && /^\d{4}$/.test(tahun)) {
+          S.importRows.push({ nama, rt, tahun });
+        } else errs++;
+      });
+      const prev = document.getElementById('importPreview');
+      prev.style.display = 'block';
+      prev.innerHTML = `<strong>${S.importRows.length}</strong> baris valid, <strong>${errs}</strong> diabaikan.` +
+        (S.importRows.length ? `<br>Pratinjau: ${S.importRows.slice(0,3).map(r=>r.nama+' ('+r.rt+', '+r.tahun+' H)').join('; ')}${S.importRows.length>3?'...':''}` : '');
+      document.getElementById('btnImport').disabled = !S.importRows.length;
+      document.getElementById('errImport').style.display = 'none';
+      if (!S.importRows.length) showErr('errImport', 'Tidak ada baris valid. Cek format CSV.');
+      document.getElementById('dropZoneText').textContent = `📄 ${file.name}  (${S.importRows.length} data siap import)`;
+    };
+    r.readAsText(file, 'UTF-8');
+  },
+
+  async execute() {
+    if (!S.importRows.length) return;
+    let added = 0, dupes = 0;
+    S.importRows.forEach(row => {
+      if (isDuplicate(row.nama, row.tahun)) { dupes++; return; }
+      S.data.push({ id:genId(), nama:row.nama, rt:row.rt, tahun:row.tahun, createdAt:new Date().toISOString() });
+      added++;
+    });
+    Store.saveData(); UI.renderTable(); UI.updateStats();
+    document.getElementById('totalCount').textContent = S.data.length;
+    if (S.isOnline && Api.isConfigured()) {
+      try { await Api.post({ action:'import', data:JSON.stringify(S.importRows) }); }
+      catch { S.importRows.forEach(r=>Api.enqueue({action:'add',nama:r.nama,rt:r.rt,tahun:r.tahun})); }
+    } else {
+      S.importRows.forEach(r => Api.enqueue({action:'add',nama:r.nama,rt:r.rt,tahun:r.tahun}));
+    }
+    Audit.add('add', `Import: ${added} ditambahkan, ${dupes} duplikat dilewati`);
+    toast(`📤 Import selesai: ${added} data ditambahkan`, 'success');
+    if (dupes) toast(`ℹ ${dupes} data duplikat dilewati`, 'info');
+    this.clear();
+  },
+
+  clear() {
+    S.importRows = [];
+    document.getElementById('importFile').value = '';
+    document.getElementById('dropZoneText').textContent = '📂 Klik atau seret file CSV ke sini';
+    document.getElementById('importPreview').style.display = 'none';
+    document.getElementById('errImport').style.display = 'none';
+    document.getElementById('btnImport').disabled = true;
+  },
+};
+
+/* ====================================================================
+   EXPORTER — Professional CSV (UTF-8 BOM, opens cleanly in Excel)
+===================================================================== */
+const Exporter = {
+  _sort(data) {
+    return [...data].sort((a,b) => {
+      const tA=parseInt(a.tahun||'0'), tB=parseInt(b.tahun||'0');
+      if (tA!==tB) return tA-tB;
+      const rA=parseInt(a.rt.replace(/\D/g,''))||0, rB=parseInt(b.rt.replace(/\D/g,''))||0;
+      return rA!==rB ? rA-rB : a.nama.localeCompare(b.nama,'id');
+    });
+  },
+
+  _build(data, title) {
+    const now = today();
+    const lines = [
+      `"MUSHOLLA NURUL FALAH"`,
+      `"DAFTAR MUSTAHIK QURBAN"`,
+      `"${title}"`,
+      `"Dicetak: ${now}"`,
+      '',
+      '"No","Nama Mustahik","RT","Tahun H"',
+    ];
+    data.forEach((d,i) => {
+      lines.push(`${i+1},"${d.nama.replace(/"/g,'""')}","${d.rt}","${d.tahun||APP.DEFAULT_YEARS[0]} H"`);
+    });
+
+    // Rekap per RT
+    const rtC = {};
+    data.forEach(d => { rtC[d.rt] = (rtC[d.rt]||0)+1; });
+    const rtKeys = sortRT(Object.keys(rtC));
+    lines.push('','','--- REKAP PER RT ---');
+    lines.push('"RT","Jumlah Mustahik"');
+    rtKeys.forEach(rt => lines.push(`"${rt}",${rtC[rt]}`));
+    lines.push(`"TOTAL",${data.length}`);
+
+    // Rekap per tahun jika lebih dari 1
+    const thnC = {};
+    data.forEach(d => { const t=d.tahun||APP.DEFAULT_YEARS[0]; thnC[t]=(thnC[t]||0)+1; });
+    if (Object.keys(thnC).length > 1) {
+      lines.push('','--- REKAP PER TAHUN ---');
+      lines.push('"Tahun H","Jumlah Mustahik"');
+      Object.keys(thnC).sort().forEach(t => lines.push(`"${t} H",${thnC[t]}`));
+    }
+    return lines.join('\n');
+  },
+
+  _download(content, filename) {
+    const blob = new Blob(['\uFEFF'+content], { type:'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  },
+
+  allYears() {
+    const data = this._sort(S.data);
+    this._download(this._build(data, 'Semua Tahun'),
+      `Mustahik_NurulFalah_SemuaTahun_${new Date().toISOString().slice(0,10)}.csv`);
+    toast('📥 Export semua tahun selesai', 'success');
+    Audit.add('sys', 'Export Excel — semua tahun');
+  },
+
+  activeYear() {
+    const data = this._sort(S.data.filter(d => (d.tahun||APP.DEFAULT_YEARS[0])===S.activeYear));
+    this._download(this._build(data, `Tahun ${S.activeYear} H`),
+      `Mustahik_NurulFalah_${S.activeYear}_${new Date().toISOString().slice(0,10)}.csv`);
+    toast('📥 Export tahun ' + S.activeYear + ' selesai', 'success');
+    Audit.add('sys', `Export Excel — ${S.activeYear} H`);
+  },
+
+  perRT() {
+    const fThn = document.getElementById('filterTahun').value;
+    const data = this._sort(S.data.filter(d => !fThn || (d.tahun||APP.DEFAULT_YEARS[0])===fThn));
+    const rtC  = {};
+    data.forEach(d => { (rtC[d.rt]||(rtC[d.rt]=[])).push(d); });
+
+    const lines = [
+      '"MUSHOLLA NURUL FALAH"',
+      '"DAFTAR MUSTAHIK QURBAN — PER RT"',
+      `"${fThn ? fThn+' H' : 'Semua Tahun'}"`,
+      `"Dicetak: ${today()}"`,
+      '',
+    ];
+    sortRT(Object.keys(rtC)).forEach(rt => {
+      lines.push('', `"=== ${rt} (${rtC[rt].length} mustahik) ==="`, '"No","Nama Mustahik","Tahun H"');
+      rtC[rt].forEach((d,i) => lines.push(`${i+1},"${d.nama.replace(/"/g,'""')}","${d.tahun||APP.DEFAULT_YEARS[0]} H"`));
+    });
+    this._download(lines.join('\n'),
+      `Mustahik_NurulFalah_PerRT_${new Date().toISOString().slice(0,10)}.csv`);
+    toast('📥 Export per RT selesai', 'success');
+  },
+
+  template() {
+    const content = [
+      'Nama Mustahik,RT,Tahun',
+      'Ahmad Suryadi,RT 01,1446',
+      'Siti Aminah Binti Hasan,RT 02,1446',
+      'Muhammad Rizky,RT 03,1447',
+    ].join('\n');
+    this._download(content, 'Template_Import_Mustahik.csv');
+    toast('📄 Template diunduh', 'info');
+  },
+};
+
+/* ====================================================================
+   PRINTER — Professional A4 output
+===================================================================== */
+const Printer = {
+  open() {
+    const fThn   = document.getElementById('filterTahun').value;
+    const fRT    = document.getElementById('filterRT').value;
+    const search = document.getElementById('searchInput').value.trim().toLowerCase();
+
+    const data = [...S.data].filter(d =>
+      (!fThn   || (d.tahun||APP.DEFAULT_YEARS[0])===fThn) &&
+      (!fRT    || d.rt===fRT) &&
+      (!search || d.nama.toLowerCase().includes(search))
+    ).sort((a,b) => {
+      const rA=parseInt(a.rt.replace(/\D/g,''))||0, rB=parseInt(b.rt.replace(/\D/g,''))||0;
+      return rA!==rB ? rA-rB : a.nama.localeCompare(b.nama,'id');
+    });
+
+    // Print header
+    const parts = [];
+    if (fThn) parts.push(fThn + ' H');
+    if (fRT)  parts.push(fRT);
+    if (search) parts.push(`Pencarian: "${search}"`);
+    const filterStr = parts.length ? parts.join(' | ') : 'Semua Data';
+    const nowStr = today();
+
+    document.getElementById('phYear').textContent = fThn ? fThn + ' H' : 'Semua Tahun';
+    document.getElementById('phMeta').innerHTML = `
+      <span>Filter: ${filterStr}</span>
+      <span>Total: ${data.length} Mustahik</span>
+      <span>Tanggal: ${nowStr}</span>`;
+
+    // Rekap
+    const rtC = {};
+    data.forEach(d => { rtC[d.rt]=(rtC[d.rt]||0)+1; });
+    document.getElementById('prBody').innerHTML =
+      sortRT(Object.keys(rtC)).map(rt =>
+        `<tr><td>${rt}</td><td>${rtC[rt]}</td></tr>`
+      ).join('') +
+      `<tr class="pr-tot"><td>TOTAL</td><td>${data.length}</td></tr>`;
+
+    // Footer
+    document.getElementById('printFoot').innerHTML =
+      `<span>Dicetak: ${new Date().toLocaleString('id-ID')}</span>
+       <span>Panitia Qurban Musholla Nurul Falah</span>`;
+
+    // Show rekap
+    document.getElementById('printRekap').style.display = 'block';
+    window.print();
+    setTimeout(() => { document.getElementById('printRekap').style.display = 'none'; }, 600);
+
+    Audit.add('sys', `Print — ${filterStr} (${data.length} data)`);
+  },
+};
+
+/* ====================================================================
+   UI MODULE
+===================================================================== */
+const UI = {
+  init() {
+    document.getElementById('versionTag').textContent = APP.VERSION;
+    // Pastikan dropdown tahun terisi dengan benar
+    const yr = S.activeYear || APP.DEFAULT_YEARS[0];
+    const itEl = document.getElementById('inputTahun');
+    const ftEl = document.getElementById('filterTahun');
+    // Set value, jika opsi belum ada maka tambahkan dulu
+    if (itEl) {
+      if (!Array.from(itEl.options).find(o => o.value === yr)) {
+        itEl.insertAdjacentHTML('beforeend', `<option value="${yr}">${yr} H</option>`);
+      }
+      itEl.value = yr;
+    }
+    if (ftEl) {
+      if (!Array.from(ftEl.options).find(o => o.value === yr)) {
+        ftEl.insertAdjacentHTML('beforeend', `<option value="${yr}">${yr} H</option>`);
+      }
+      ftEl.value = yr;
+    }
+  },
+
+  setStatus(state, msg) {
+    document.getElementById('statusDot').className = 'status-dot ' + state;
+    document.getElementById('statusMsg').textContent = msg;
+  },
+
+  updateSyncTime() {
+    const raw = Store.get(APP.STORE.sync);
+    if (!raw) return;
+    const d = new Date(raw);
+    const time = d.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+    document.getElementById('syncTime').textContent = 'Sync: ' + time;
+  },
+
+  showSkeleton() {
+    document.getElementById('tableBody').innerHTML = [1,2,3].map(() =>
+      `<tr><td><div class="skeleton" style="width:18px"></div></td>
+           <td><div class="skeleton" style="width:${40+Math.random()*30|0}%"></div></td>
+           <td><div class="skeleton" style="width:48px"></div></td></tr>`
+    ).join('');
+  },
+
+  renderTable() {
+    const search = document.getElementById('searchInput').value.trim().toLowerCase();
+    const fRT    = document.getElementById('filterRT').value;
+    const fThn   = document.getElementById('filterTahun').value;
+
+    const filtered = S.data.filter(d =>
+      (!search || d.nama.toLowerCase().includes(search)) &&
+      (!fRT    || d.rt === fRT) &&
+      (!fThn   || (d.tahun||APP.DEFAULT_YEARS[0]) === fThn)
+    ).sort((a,b) => {
+      const rA=parseInt(a.rt.replace(/\D/g,''))||0, rB=parseInt(b.rt.replace(/\D/g,''))||0;
+      return rA!==rB ? rA-rB : a.nama.localeCompare(b.nama,'id');
+    });
+
+    // Column header
+    const thL = document.getElementById('thLast');
+    if (fRT) thL.textContent = S.isAdmin ? 'Aksi' : '';
+    else     thL.textContent = S.isAdmin ? 'RT / Aksi' : 'RT';
+
+    const tbody = document.getElementById('tableBody');
+    if (!filtered.length) {
+      tbody.innerHTML = `<tr><td colspan="3">
+        <div class="tbl-empty">
+          <div class="empty-ico">${S.data.length ? '🔍' : '📋'}</div>
+          <p>${S.data.length
+            ? 'Tidak ada data yang sesuai filter.<br>Coba ubah atau hapus filter.'
+            : 'Belum ada data mustahik.<br>Gunakan form di atas untuk menambahkan.'}</p>
+        </div></td></tr>`;
+    } else {
+      tbody.innerHTML = filtered.map((d, i) => {
+        const isNew  = d.id === S.highlightId;
+        const adminBtns = S.isAdmin
+          ? `<button class="btn btn-xs btn-outline" onclick="DataMgr.openEdit('${d.id}')" title="Edit data">✏️</button>
+             <button class="btn btn-xs btn-danger" onclick="DataMgr.openDelete('${d.id}')" title="Hapus data">🗑</button>`
+          : '';
+        const col3 = fRT
+          ? `<td class="col-act">${adminBtns || '<span class="lock-ico" title="Login admin untuk edit/hapus">🔒</span>'}</td>`
+          : `<td><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+              <span class="rt-pill">${esc(d.rt)}</span>${adminBtns}
+             </div></td>`;
+        return `<tr${isNew ? ' class="row-new"' : ''}>
+          <td class="col-no">${i+1}</td>
+          <td class="col-name">${esc(d.nama)}</td>
+          ${col3}
+        </tr>`;
+      }).join('');
+    }
+    S.highlightId = null;
+
+    // Footer
+    const parts = [];
+    if (fThn) parts.push(fThn+' H');
+    if (fRT)  parts.push(fRT);
+    if (search) parts.push(`"${search}"`);
+    document.getElementById('tblInfo').textContent = `Menampilkan ${filtered.length} dari ${S.data.length} data`;
+    document.getElementById('filterInfo').textContent = parts.length ? 'Filter: '+parts.join(' · ') : '';
+  },
+
+  updateStats() {
+    const yd  = S.data.filter(d => (d.tahun||APP.DEFAULT_YEARS[0]) === S.activeYear);
+    const rtC = {};
+    yd.forEach(d => { rtC[d.rt]=(rtC[d.rt]||0)+1; });
+    document.getElementById('statsGrid').innerHTML =
+      `<div class="stat-card primary" style="cursor:default">
+        <div class="stat-num">${yd.length}</div>
+        <div class="stat-lbl">Total ${S.activeYear} H</div>
+      </div>` +
+      sortRT(Object.keys(rtC)).map(rt =>
+        `<div class="stat-card" onclick="UI.quickFilter('${rt}')" title="Klik untuk filter ${rt}">
+          <div class="stat-num">${rtC[rt]}</div>
+          <div class="stat-lbl">${rt}</div>
+        </div>`
+      ).join('');
+  },
+
+  quickFilter(rt) {
+    document.getElementById('filterRT').value = rt;
+    this.renderTable();
+  },
+
+  onYearChange() {
+    const y = document.getElementById('filterTahun').value;
+    if (y) YearMgr.setActive(y);
+    else { UI.renderTable(); }
+  },
+
+  applyAdmin() {
+    const tog   = document.getElementById('adminToggle');
+    const dot   = document.getElementById('adminDot');
+    const bar   = document.getElementById('adminBar');
+    const panel = document.getElementById('adminPanel');
+
+    if (S.isAdmin) {
+      tog.classList.add('on');
+      dot.style.cssText = 'background:#6ee7b7;box-shadow:0 0 6px #6ee7b7';
+      document.getElementById('adminToggleLabel').textContent = '🔐 Admin';
+      bar.classList.add('on');
+      panel.classList.toggle('on', S.panelOpen);
+      YearMgr.renderPills(); Audit.render();
+    } else {
+      tog.classList.remove('on');
+      dot.style.cssText = '';
+      document.getElementById('adminToggleLabel').textContent = 'Login Admin';
+      bar.classList.remove('on');
+      panel.classList.remove('on');
+      document.getElementById('sessionChip').textContent = '';
+    }
+    this.renderTable();
+  },
+
+  togglePanel() {
+    S.panelOpen = !S.panelOpen;
+    document.getElementById('adminPanel').classList.toggle('on', S.panelOpen);
+    document.getElementById('panelToggleBtn').textContent = S.panelOpen ? '✕ Tutup Panel' : '⚙️ Panel Admin';
+    if (S.panelOpen) { YearMgr.renderPills(); Audit.render(); }
+  },
+
+  openModal(id)  { document.getElementById(id).classList.add('on');  document.body.style.overflow='hidden'; },
+  closeModal(id) { document.getElementById(id).classList.remove('on'); document.body.style.overflow=''; },
+};
+
+/* ====================================================================
+   SMALL HELPERS
+===================================================================== */
+function showErr(id, msg) { const e=document.getElementById(id); if(e){e.textContent=msg;e.style.display='block';} }
+function setLoading(btnId, lblId, spinId, on) {
+  document.getElementById(btnId).disabled          = on;
+  document.getElementById(lblId).style.display     = on ? 'none' : 'inline';
+  document.getElementById(spinId).style.display    = on ? 'inline' : 'none';
+}
+
+/* ====================================================================
+   EVENT LISTENERS
+===================================================================== */
+// Close modal on overlay click
+document.querySelectorAll('.overlay').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target===ov) UI.closeModal(ov.id); });
+});
+// ESC to close modal
+document.addEventListener('keydown', e => {
+  if (e.key==='Escape') document.querySelectorAll('.overlay.on').forEach(m => UI.closeModal(m.id));
+});
+// Online/Offline detection
+window.addEventListener('online',  () => { if (!S.isOnline) DataMgr.load(); });
+window.addEventListener('offline', () => {
+  S.isOnline = false;
+  UI.setStatus('offline', 'Koneksi terputus');
+  document.getElementById('offlineBadge').style.display = 'inline';
+  toast('⚠ Koneksi terputus, beralih ke mode offline', 'warn');
+});
+// Auto-refresh
+setInterval(() => {
+  if (S.isOnline && Api.isConfigured() && !document.hidden) DataMgr.load();
+}, APP.REFRESH_INTERVAL);
+// Page visibility — refresh when tab becomes visible after hidden
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && S.isOnline && Api.isConfigured()) DataMgr.load();
+});
+
+/* ====================================================================
+   BOOT
+===================================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+  Audit.init();
+  YearMgr.init();
+  UI.init();
+  DataMgr.load();
+
+  // Enter key on form
+  document.getElementById('inputNama').addEventListener('keydown', e => {
+    if (e.key==='Enter') {
+      const rt = document.getElementById('inputRT');
+      if (!rt.value) rt.focus();
+      else DataMgr.submit();
+    }
+  });
+});
+</script>
+</body>
+</html>
