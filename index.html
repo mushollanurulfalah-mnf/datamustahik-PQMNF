@@ -674,7 +674,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
     <img src="https://i.ibb.co.com/W4rmSh0f/white-mnf2.png" alt="MNF" style="width:38px;height:38px;filter:drop-shadow(0 1px 4px rgba(201,162,39,.35))">
     <div class="header-text">
       <h1>Musholla Nurul Falah</h1>
-      <p>Sistem Manajemen Data Mustahik Qurban</p>
+      <p>Sistem Manajemen Mustahik</p>
     </div>
     <div class="header-right">
       <div class="year-chip" id="yearChip">— H</div>
@@ -791,7 +791,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
         <div class="ferr" id="errImport"></div>
         <p class="import-note">
           Format: <code>Nama,RT,Tahun</code> per baris<br>
-          Contoh: <code>Ahmad Suryadi,RT 01,1446</code>
+          Contoh: <code>Ahmad Maulana,RT 10/04,1447</code>
         </p>
         <div class="import-actions">
           <button class="btn btn-sm btn-success" id="btnImport" onclick="Importer.execute()" disabled>📤 Import</button>
@@ -830,7 +830,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
     <!-- Print-only header -->
     <div class="print-header">
       <div class="ph-banner">
-        <img src="https://i.ibb.co.com/KpLTpmnn/logo-mnf-new-ijo.png" alt="MNF" style="width:80px; float:left; margin-right: 15px;">
+        <img src="https://i.ibb.co.com/W4rmSh0f/white-mnf2.png" alt="MNF" style="width:80px; float:left; margin-right: 15px;">
         <div class="ph-title">Musholla Nurul Falah</div>
         <div class="ph-mosque">Data Mustahik Qurban</div>
         <div class="ph-year" id="phYear"></div>
@@ -894,7 +894,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
     <div class="print-sign">
       <div class="sign-box">
         <div>Ketua Panitia Qurban,</div>
-        <div class="sign-line">( ________________________________ )</div>
+        <div></div>
       </div>
     </div>
 
@@ -995,7 +995,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
 const APP = Object.freeze({
   VERSION:         '4.0.0',
   NAME:            'Musholla Nurul Falah',
-  GAS_URL:         'https://script.google.com/macros/s/AKfycbzQKOnPmd8sMnyLwB6_cSde00nwdYRuMcGiTJyKL7EwYV4DEyDgOaoM7r3rgkhZ-K8PmA/exec',
+  GAS_URL:         'https://script.google.com/macros/s/AKfycbylFnVQWZQ8pwObiJzl5j3fvKHxn1LW9vwIKA5vzimN5FaSV1blUWH4gXXXUzbtLCqR_g/exec',
   ADMIN_PASS:      'PQMNF2026',      // ← Ganti password admin
   SESSION_MINUTES: 60,               // Auto-logout admin setelah X menit
   RT_LIST:         ['RT 10/04','RT 03/04','RT 04/04','RT 02/03','RT 03/03'],
@@ -1315,14 +1315,32 @@ const Api = {
     if (!S.isOnline) return;
     const q = Store.get(APP.STORE.queue, []);
     if (!q.length) return;
-    let ok = 0;
+    let ok = 0, fail = 0;
+    const remaining = [];
     for (const p of q) {
-      try { await this.post(p); ok++; } catch {}
+      try {
+        await this.post(p);
+        ok++;
+      } catch (e) {
+        // Untuk delete: jika data tidak ditemukan di server (404/not found),
+        // anggap sudah terhapus — jangan antrekan ulang
+        const msg = (e.message || '').toLowerCase();
+        const isNotFound = msg.includes('tidak ditemukan') || msg.includes('not found');
+        if (p.action === 'delete' && isNotFound) {
+          ok++; // sudah terhapus, skip
+        } else {
+          remaining.push(p);
+          fail++;
+        }
+      }
     }
+    // Simpan sisa yang benar-benar gagal
+    Store.set(APP.STORE.queue, remaining);
     if (ok > 0) {
-      Store.set(APP.STORE.queue, []);
-      await DataMgr.load();
-      toast(`☁️ ${ok} perubahan offline berhasil disinkronkan`, 'success');
+      toast(`☁️ ${ok} perubahan tersinkronkan`, 'success');
+    }
+    if (fail > 0) {
+      toast(`⚠ ${fail} operasi belum bisa disinkronkan`, 'warn');
     }
   },
 };
@@ -1347,15 +1365,18 @@ const DataMgr = {
     }
 
     try {
+      // Flush antrian operasi offline DULU sebelum fetch
+      // agar data yang sudah dihapus/diedit tidak muncul lagi
+      S.isOnline = true;
+      await Api.flushQueue();
+
       const res = await Api.get({ action: 'getAll' });
       S.data = res.data || [];
-      S.isOnline = true;
       Store.saveData();
       Store.set(APP.STORE.sync, new Date().toISOString());
       document.getElementById('offlineBadge').style.display = 'none';
       UI.setStatus('online', `Terhubung · ${S.data.length} data`);
       UI.updateSyncTime();
-      await Api.flushQueue();
     } catch (e) {
       S.isOnline = false;
       S.data = Store.get(APP.STORE.data, []);
@@ -1459,19 +1480,40 @@ const DataMgr = {
 
   async confirmDelete() {
     const id = S.delTarget; if (!id) return;
-    const d = S.data.find(x => x.id===id);
-    document.getElementById('btnConfirmDelete').disabled = true;
+    const d = S.data.find(x => x.id === id);
+    const btnDel = document.getElementById('btnConfirmDelete');
+    btnDel.disabled = true;
+
     try {
-      if (S.isOnline && Api.isConfigured()) await Api.post({ action:'delete', id });
-      else Api.enqueue({ action:'delete', id });
-      S.data = S.data.filter(x => x.id!==id); Store.saveData();
-      UI.renderTable(); UI.updateStats();
+      // 1. Hapus di server DULU jika online
+      if (Api.isConfigured()) {
+        if (S.isOnline) {
+          // Wajib berhasil di server sebelum hapus lokal
+          await Api.post({ action: 'delete', id });
+        } else {
+          // Offline: antrekan, tapi tetap hapus lokal
+          // Tandai juga agar queue tidak konflik saat sync
+          Api.enqueue({ action: 'delete', id });
+        }
+      }
+
+      // 2. Hapus lokal SETELAH server berhasil (atau offline)
+      S.data = S.data.filter(x => x.id !== id);
+      Store.saveData();
+      UI.renderTable();
+      UI.updateStats();
       document.getElementById('totalCount').textContent = S.data.length;
-      Audit.add('del', `Hapus: ${d?d.nama:'—'} (${d?d.tahun:'?'} H)`);
-      toast(`🗑 ${d?d.nama:'Data'} dihapus`, 'success');
-    } catch (e) { toast('❌ Gagal menghapus: ' + e.message, 'error'); }
-    UI.closeModal('modalDelete'); S.delTarget = null;
-    document.getElementById('btnConfirmDelete').disabled = false;
+      Audit.add('del', `Hapus: ${d ? d.nama : '—'} (${d ? d.tahun : '?'} H)`);
+      toast(`🗑 ${d ? d.nama : 'Data'} berhasil dihapus`, 'success');
+      UI.closeModal('modalDelete');
+
+    } catch (e) {
+      // Server gagal hapus → jangan hapus lokal agar konsisten
+      toast('❌ Gagal menghapus: ' + e.message + '. Data tetap ada.', 'error');
+    } finally {
+      S.delTarget = null;
+      btnDel.disabled = false;
+    }
   },
 
   openEdit(id) {
@@ -1605,7 +1647,7 @@ const Exporter = {
     const now = today();
     const lines = [
       `"MUSHOLLA NURUL FALAH"`,
-      `"DAFTAR MUSTAHIK QURBAN"`,
+      `"DATA MUSTAHIK QURBAN"`,
       `"${title}"`,
       `"Dicetak: ${now}"`,
       '',
@@ -1668,7 +1710,7 @@ const Exporter = {
 
     const lines = [
       '"MUSHOLLA NURUL FALAH"',
-      '"DAFTAR MUSTAHIK QURBAN — PER RT"',
+      '"DATA MUSTAHIK QURBAN — PER RT"',
       `"${fThn ? fThn+' H' : 'Semua Tahun'}"`,
       `"Dicetak: ${today()}"`,
       '',
@@ -1685,9 +1727,9 @@ const Exporter = {
   template() {
     const content = [
       'Nama Mustahik,RT,Tahun',
-      'Ahmad Suryadi,RT 01,1446',
-      'Siti Aminah Binti Hasan,RT 02,1446',
-      'Muhammad Rizky,RT 03,1447',
+      'Ahmad Maulana,RT 10/04,1447',
+      'Siti Aminah Binti Hasan,RT 03/04,1447',
+      'Muhammad Rizky,RT 04/04,1447',
     ].join('\n');
     this._download(content, 'Template_Import_Mustahik.csv');
     toast('📄 Template diunduh', 'info');
@@ -1704,46 +1746,344 @@ const Printer = {
     const search = document.getElementById('searchInput').value.trim().toLowerCase();
 
     const data = [...S.data].filter(d =>
-      (!fThn   || (d.tahun||APP.DEFAULT_YEARS[0])===fThn) &&
-      (!fRT    || d.rt===fRT) &&
+      (!fThn   || (d.tahun || APP.DEFAULT_YEARS[0]) === fThn) &&
+      (!fRT    || d.rt === fRT) &&
       (!search || d.nama.toLowerCase().includes(search))
-    ).sort((a,b) => {
-      const rA=parseInt(a.rt.replace(/\D/g,''))||0, rB=parseInt(b.rt.replace(/\D/g,''))||0;
-      return rA!==rB ? rA-rB : a.nama.localeCompare(b.nama,'id');
+    ).sort((a, b) => {
+      const rA = parseInt(a.rt.replace(/\D/g,'')) || 0;
+      const rB = parseInt(b.rt.replace(/\D/g,'')) || 0;
+      return rA !== rB ? rA - rB : a.nama.localeCompare(b.nama, 'id');
     });
 
-    // Print header
     const parts = [];
-    if (fThn) parts.push(fThn + ' H');
-    if (fRT)  parts.push(fRT);
-    if (search) parts.push(`Pencarian: "${search}"`);
-    const filterStr = parts.length ? parts.join(' | ') : 'Semua Data';
-    const nowStr = today();
+    if (fThn)   parts.push(fThn + ' H');
+    if (fRT)    parts.push(fRT);
+    if (search) parts.push('Cari: "' + search + '"');
+    const filterStr  = parts.length ? parts.join(' | ') : 'Semua Data';
+    const tahunLabel = fThn ? fThn + ' H' : 'Semua Tahun';
+    const nowStr     = new Date().toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' });
+    const nowFull    = new Date().toLocaleString('id-ID');
 
-    document.getElementById('phYear').textContent = fThn ? fThn + ' H' : 'Semua Tahun';
-    document.getElementById('phMeta').innerHTML = `
-      <span>Filter: ${filterStr}</span>
-      <span>Total: ${data.length} Mustahik</span>
-      <span>Tanggal: ${nowStr}</span>`;
-
-    // Rekap
+    // Rekap per RT
     const rtC = {};
-    data.forEach(d => { rtC[d.rt]=(rtC[d.rt]||0)+1; });
-    document.getElementById('prBody').innerHTML =
-      sortRT(Object.keys(rtC)).map(rt =>
-        `<tr><td>${rt}</td><td>${rtC[rt]}</td></tr>`
-      ).join('') +
-      `<tr class="pr-tot"><td>TOTAL</td><td>${data.length}</td></tr>`;
+    data.forEach(d => { rtC[d.rt] = (rtC[d.rt] || 0) + 1; });
+    const rtKeys = sortRT(Object.keys(rtC));
 
-    // Footer
-    document.getElementById('printFoot').innerHTML =
-      `<span>Dicetak: ${new Date().toLocaleString('id-ID')}</span>
-       <span>Panitia Qurban Musholla Nurul Falah</span>`;
+    // ── Bangun baris 2 kolom ──────────────────────────────
+    // Kelompokkan per RT, lalu baris 2 kolom per RT
+    let listHTML = '';
+    let globalNo = 0;
 
-    // Show rekap
-    document.getElementById('printRekap').style.display = 'block';
+    // Kumpulkan per RT agar heading RT tampil sekali
+    const grouped = {};
+    data.forEach(d => {
+      const rt = d.rt;
+      if (!grouped[rt]) grouped[rt] = [];
+      grouped[rt].push(d);
+    });
+
+    rtKeys.forEach(rt => {
+      const items = grouped[rt] || [];
+
+      // Heading RT — full-width (colspan 2 sel)
+      listHTML += `
+        <tr class="rt-heading">
+          <td colspan="2">
+            <span class="rt-label">${rt}</span>
+            <span class="rt-count">${items.length} mustahik</span>
+          </td>
+        </tr>`;
+
+      // Baris 2 kolom
+      for (let i = 0; i < items.length; i += 2) {
+        const left  = items[i];
+        const right = items[i + 1] || null;
+        globalNo++;
+        const noL  = globalNo;
+        const noR  = right ? ++globalNo : null; // increment dulu sebelum dipakai
+
+        listHTML += `<tr class="data-row">
+          <td class="col-left">
+            <span class="num">${noL}.</span>
+            <span class="name">${esc(left.nama)}</span>
+          </td>
+          <td class="col-right">
+            ${right
+              ? `<span class="num">${noR}.</span><span class="name">${esc(right.nama)}</span>`
+              : ''}
+          </td>
+        </tr>`;
+      }
+    });
+
+    // ── Rekap rows ────────────────────────────────────────
+    let rekapHTML = rtKeys.map(rt =>
+      `<tr><td class="rk-rt">${rt}</td><td class="rk-jml">${rtC[rt]}</td></tr>`
+    ).join('');
+    rekapHTML += `<tr class="rk-total"><td>TOTAL MUSTAHIK</td><td>${data.length}</td></tr>`;
+
+    // ── HTML dokumen cetak ────────────────────────────────
+    const html = `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Mustahik Qurban — ${APP.NAME}</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 18mm 15mm 18mm 15mm;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-size: 10pt;
+    color: #0e2638;
+    background: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── HEADER ── */
+  .doc-header {
+    text-align: center;
+    padding-bottom: 10px;
+    margin-bottom: 4px;
+    border-bottom: 3px double #1a4f7a;
+  }
+  .doc-header .org {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #1a4f7a;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .doc-header .title {
+    font-size: 15pt;
+    font-weight: 900;
+    color: #0b2e50;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .doc-header .year {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #1a4f7a;
+  }
+
+  /* ── META BAR ── */
+  .meta-bar {
+    display: flex;
+    justify-content: space-between;
+    background: #eef6ff;
+    border: 1px solid #c8dff2;
+    border-radius: 3px;
+    padding: 4px 10px;
+    margin: 8px 0 10px;
+    font-size: 7.5pt;
+    color: #3a5f7a;
+  }
+
+  /* ── MAIN TABLE ── */
+  .main-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  /* RT Heading row */
+  .rt-heading td {
+    background: #1a4f7a;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    page-break-after: avoid;
+  }
+  .rt-heading .rt-label { margin-right: 8px; }
+  .rt-heading .rt-count {
+    font-size: 7pt;
+    font-weight: 400;
+    opacity: .8;
+    font-style: italic;
+  }
+
+  /* Data rows */
+  .data-row { page-break-inside: avoid; }
+  .data-row:nth-child(even) td { background: #f4f8fd; }
+  .data-row td {
+    padding: 5px 8px 5px 10px;
+    border-bottom: 1px solid #deeaf4;
+    vertical-align: middle;
+    width: 50%;
+  }
+  .col-left  { border-right: 1.5px solid #c8dff2; }
+  .col-right { border-left: none; }
+
+  /* Cell content */
+  .num {
+    display: inline-block;
+    width: 26px;
+    color: #7aaac8;
+    font-size: 8.5pt;
+    font-weight: 700;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+  .name {
+    font-size: 9.5pt;
+    font-weight: 600;
+    color: #0e2638;
+    vertical-align: middle;
+  }
+
+  /* ── REKAP ── */
+  .rekap-section {
+    margin-top: 16px;
+    page-break-inside: avoid;
+  }
+  .rekap-title {
+    font-size: 8pt;
+    font-weight: 700;
+    color: #1a4f7a;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    border-top: 1.5px solid #1a4f7a;
+    padding-top: 8px;
+    margin-bottom: 6px;
+  }
+  .rekap-table {
+    border-collapse: collapse;
+    font-size: 9pt;
+    min-width: 200px;
+  }
+  .rekap-table th {
+    background: #1a4f7a;
+    color: #fff;
+    padding: 4px 14px;
+    font-size: 8pt;
+    text-align: left;
+  }
+  .rekap-table td {
+    padding: 4px 14px;
+    border: 1px solid #d1e4f2;
+  }
+  .rekap-table .rk-rt  { font-weight: 600; }
+  .rekap-table .rk-jml { text-align: center; font-weight: 700; color: #1a4f7a; }
+  .rekap-table tr:nth-child(even) td { background: #f4f8fd; }
+  .rk-total td {
+    background: #dbeeff !important;
+    font-weight: 700;
+    color: #0b2e50;
+    border-top: 2px solid #1a4f7a;
+  }
+
+  /* ── SIGNATURE ── */
+  .sign-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 28px;
+  }
+  .sign-box {
+    text-align: center;
+    font-size: 8pt;
+    color: #444;
+  }
+  .sign-box .sign-place { margin-bottom: 2px; }
+  .sign-box .sign-space { height: 50px; }
+  .sign-box .sign-line  {
+    border-top: 1px solid #444;
+    padding-top: 4px;
+    font-weight: 700;
+    width: 180px;
+    margin: 0 auto;
+  }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 7px;
+    border-top: 1px solid #d1e4f2;
+    font-size: 7pt;
+    color: #8aabca;
+  }
+
+  /* Prevent orphan RT header */
+  .rt-heading + .data-row { page-break-before: avoid; }
+</style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <img src="https://i.ibb.co.com/KpLTpmnn/logo-mnf-new-ijo.png" alt="MNF" style="width:70px; float:left; margin-right:15px;">
+    <div class="title">Musholla Nurul Falah</div>
+    <div class="org">Data Mustahik Qurban</div>
+    <div class="year">${tahunLabel}</div>
+  </div>
+
+  <!-- META -->
+  <div class="meta-bar">
+    <span>Filter: ${filterStr}</span>
+    <span>Total: ${data.length} Mustahik</span>
+    <span>Tanggal: ${nowStr}</span>
+  </div>
+
+  <!-- LIST 2 KOLOM -->
+  <table class="main-table">
+    <tbody>
+      ${listHTML}
+    </tbody>
+  </table>
+
+  <!-- REKAP -->
+  <div class="rekap-section">
+    <div class="rekap-title">Rekap Per RT</div>
+    <table class="rekap-table">
+      <thead><tr><th>RT</th><th>Jumlah</th></tr></thead>
+      <tbody>${rekapHTML}</tbody>
+    </table>
+  </div>
+
+  <!-- TANDA TANGAN -->
+  <div class="sign-row">
+    <div class="sign-box">
+      <div class="sign-place">${nowStr}</div>
+      <div class="sign-space"></div>
+      <div class="sign-line">Ketua Panitia Qurban</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <span>Dicetak: ${nowFull}</span>
+    <span>${APP.NAME}</span>
+  </div>
+
+<script>
+  window.onload = function() {
+    window.focus();
     window.print();
-    setTimeout(() => { document.getElementById('printRekap').style.display = 'none'; }, 600);
+    // Tutup tab setelah print dialog ditutup
+    window.onafterprint = function() { window.close(); };
+  };
+<\/script>
+</body>
+</html>`;
+
+    // Buka di popup/tab baru
+    const win = window.open('', '_blank', 'width=900,height=700');
+    if (!win) {
+      toast('⚠ Popup diblokir browser. Izinkan popup untuk halaman ini.', 'warn', 6000);
+      return;
+    }
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
 
     Audit.add('sys', `Print — ${filterStr} (${data.length} data)`);
   },
