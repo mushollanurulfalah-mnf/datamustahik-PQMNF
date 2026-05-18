@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#1a4f7a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Data Mustahik Qurban · Musholla Nurul Falah</title>
+<title>Daya Mustahik Qurban · Musholla Nurul Falah</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -387,6 +387,30 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
 .add-year input:focus { border-color: var(--blue-500); box-shadow: 0 0 0 3px rgba(37,113,173,.12); }
 
 /* Drop zone */
+
+/* Import wizard */
+.imp-step-label { font-size:.72rem;font-weight:700;color:var(--blue-700);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px; }
+.imp-rt-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:7px; }
+.imp-rt-btn { padding:7px 6px;border:1.5px solid var(--gray-200);border-radius:var(--radius-s);font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;background:var(--gray-50);color:var(--gray-700);transition:all .15s;text-align:center; }
+.imp-rt-btn:hover { border-color:var(--blue-500);background:var(--blue-50);color:var(--blue-700); }
+.imp-rt-btn.sel { background:var(--blue-700);color:#fff;border-color:var(--blue-700);box-shadow:0 2px 6px rgba(26,79,122,.25); }
+.imp-preview-detail { background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-m);padding:10px 14px;max-height:220px;overflow-y:auto; }
+.imp-prev-group { margin-bottom:10px; }
+.imp-prev-group:last-child { margin-bottom:0; }
+.imp-prev-rt { font-size:.72rem;font-weight:700;color:var(--blue-700);text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;background:var(--blue-50);border-radius:4px;display:inline-block;margin-bottom:5px; }
+.imp-prev-row { display:flex;align-items:center;gap:8px;padding:3px 0;font-size:.83rem;border-bottom:1px solid var(--gray-200); }
+.imp-prev-row:last-child { border-bottom:none; }
+.imp-prev-no { color:var(--gray-300);font-size:.72rem;width:22px;flex-shrink:0; }
+.imp-prev-name { flex:1;font-weight:600; }
+.imp-prev-dup { font-size:.68rem;font-weight:700;color:var(--red-500);background:var(--red-100);padding:1px 6px;border-radius:4px;flex-shrink:0; }
+.imp-prev-new { font-size:.68rem;font-weight:700;color:var(--green-700);background:var(--green-100);padding:1px 6px;border-radius:4px;flex-shrink:0; }
+.imp-summary { display:flex;gap:10px;flex-wrap:wrap;padding:8px 10px;margin-bottom:8px;background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-s);font-size:.78rem; }
+.imp-sum-item { display:flex;align-items:center;gap:4px;font-weight:600; }
+.imp-sum-new { color:var(--green-700); }
+.imp-sum-dup { color:var(--red-500); }
+.imp-sum-tot { color:var(--gray-700); }
+.import-actions { display:flex;gap:7px;margin-top:11px;flex-wrap:wrap; }
+
 .drop-zone {
   display: block; width: 100%;
   padding: 22px 16px; border: 2px dashed var(--gray-200);
@@ -577,6 +601,42 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
 /* =============================================================
    PRINT — Professional A4
 ============================================================= */
+/* =============================================================
+   KUPON STYLES
+============================================================= */
+.kupon-bar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: linear-gradient(90deg,#ecfdf5,#f0fdf4);
+  border: 1px solid #6ee7b7; border-radius: var(--radius-m);
+  padding: 8px 18px; margin-bottom: 10px;
+  font-size: .8rem; font-weight: 500;
+}
+.kb-item { display: flex; align-items: center; gap: 4px; }
+.kb-done { color: #065f46; }
+.kb-left { color: #78350f; }
+.kb-sep  { color: var(--gray-300); }
+.col-kupon-h { width: 58px; text-align: center; font-size: .67rem; }
+.col-kupon   { width: 58px; text-align: center; vertical-align: middle; }
+.btn-kupon {
+  background: none; border: none; cursor: pointer;
+  font-size: 1.25rem; line-height: 1; padding: 2px;
+  border-radius: 6px; transition: transform .15s, background .15s;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px;
+}
+.btn-kupon:hover { transform: scale(1.2); background: rgba(0,0,0,.05); }
+.btn-kupon.done  { filter: drop-shadow(0 0 4px rgba(14,159,110,.5)); }
+.btn-kupon.undone { opacity: .5; }
+.btn-kupon.undone:hover { opacity: 1; }
+.kupon-view { font-size: 1.1rem; }
+.kupon-view.done { filter: drop-shadow(0 0 3px rgba(14,159,110,.4)); }
+.kupon-view.no   { opacity: .35; }
+.row-done td { background: #f0fdf9 !important; }
+.row-done .col-name { color: #065f46 !important; }
+.kupon-time { font-size: .68rem; color: #059669; margin-top: 2px; font-weight: 500; }
+.admin-toggle.humas      { background: rgba(245,158,11,.2); border-color: rgba(245,158,11,.4); color: #fcd34d; }
+.admin-toggle.sekretaris { background: rgba(167,139,250,.2); border-color: rgba(167,139,250,.4); color: #c4b5fd; }
+
 @media print {
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
@@ -677,7 +737,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
     <img src="https://i.ibb.co.com/W4rmSh0f/white-mnf2.png" alt="MNF" style="width:38px;height:38px;filter:drop-shadow(0 1px 4px rgba(201,162,39,.35))">
     <div class="header-text">
       <h1>Musholla Nurul Falah</h1>
-      <p>Sistem Data Manajemen Mustahik</p>
+      <p>Sistem Manajemen Data Mustahik</p>
     </div>
     <div class="header-right">
       <div class="year-chip" id="yearChip">— H</div>
@@ -691,7 +751,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
 
 <!-- ADMIN NOTICE BAR -->
 <div id="adminBar">
-  <span>🔐 Mode Admin Aktif</span>
+  <span id="adminBarLabel">🔐 Mode Admin Aktif</span>
   <div class="admin-bar-right">
     <span class="session-chip" id="sessionChip"></span>
     <button class="btn btn-sm btn-ghost" id="panelToggleBtn" onclick="UI.togglePanel()"
@@ -783,23 +843,54 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
       </div>
 
       <!-- Import Data -->
-      <div class="ap-sect">
-        <h4>📤 Import Data CSV</h4>
-        <label class="drop-zone" id="dropZone"
-          ondragover="Importer.dragOver(event)" ondragleave="Importer.dragLeave(event)" ondrop="Importer.drop(event)">
-          <input type="file" id="importFile" accept=".csv,.txt" onchange="Importer.handleFile(event)">
-          <div id="dropZoneText">📂 Klik atau seret file CSV ke sini</div>
-        </label>
-        <div class="import-preview" id="importPreview"></div>
-        <div class="ferr" id="errImport"></div>
-        <p class="import-note">
-          Format: <code>Nama,RT,Tahun</code> per baris<br>
-          Contoh: <code>Ahmad Maulana,RT 10/04,1447</code>
-        </p>
-        <div class="import-actions">
-          <button class="btn btn-sm btn-success" id="btnImport" onclick="Importer.execute()" disabled>📤 Import</button>
-          <button class="btn btn-sm btn-ghost" onclick="Importer.clear()">✕ Reset</button>
-          <button class="btn btn-sm btn-outline" onclick="Exporter.template()">📄 Template</button>
+      <div class="ap-sect" style="grid-column:1/-1">
+        <h4>📤 Import Data Mustahik</h4>
+
+        <!-- Step 1: Pilih RT target -->
+        <div class="imp-step" id="impStep1">
+          <div class="imp-step-label">① Pilih RT tujuan import</div>
+          <div class="imp-rt-grid" id="impRTGrid">
+            <!-- diisi JS -->
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <div class="fg" style="flex:1;min-width:120px">
+              <label>Tahun</label>
+              <select id="impTahun" style="width:100%;padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:var(--radius-m);font-size:.84rem;background:#fff"></select>
+            </div>
+            <button class="btn btn-sm btn-outline" onclick="Importer.selectAllRT()">Pilih Semua RT</button>
+            <button class="btn btn-sm btn-ghost"   onclick="Importer.clearRT()">Reset</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Input nama mustahik -->
+        <div class="imp-step" id="impStep2" style="margin-top:14px">
+          <div class="imp-step-label">② Input nama mustahik (satu nama per baris)</div>
+          <textarea id="impTextarea" rows="8" placeholder="Ahmad Albar&#10;Michael Jaksn&#10;Dewi Persik&#10;..."
+            oninput="Importer.parseText()"
+            style="width:100%;padding:10px 12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-m);
+              font-family:inherit;font-size:.875rem;resize:vertical;outline:none;transition:.2s;background:var(--gray-50)"></textarea>
+          <div style="display:flex;gap:8px;margin-top:8px;align-items:center;flex-wrap:wrap">
+            <button class="btn btn-sm btn-outline" onclick="Importer.pasteClipboard()">📋 Tempel dari Clipboard</button>
+            <button class="btn btn-sm btn-ghost"   onclick="Importer.clearText()">✕ Kosongkan</button>
+            <label class="btn btn-sm btn-outline" style="cursor:pointer">
+              📂 Buka File CSV
+              <input type="file" id="importFile" accept=".csv,.txt" onchange="Importer.handleFile(event)" style="display:none">
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 3: Preview hasil parsing -->
+        <div id="impPreviewWrap" style="margin-top:12px;display:none">
+          <div class="imp-step-label">③ Preview sebelum import</div>
+          <div id="impPreviewDetail" class="imp-preview-detail"></div>
+        </div>
+
+        <div class="ferr" id="errImport" style="margin-top:6px"></div>
+
+        <div class="import-actions" style="margin-top:12px">
+          <button class="btn btn-sm btn-success" id="btnImport" onclick="Importer.execute()" disabled>📤 Simpan Import</button>
+          <button class="btn btn-sm btn-ghost"   onclick="Importer.clear()">🗑 Reset Semua</button>
+          <button class="btn btn-sm btn-outline"  onclick="Exporter.template()">📄 Download Template CSV</button>
         </div>
       </div>
 
@@ -833,14 +924,20 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
     <!-- Print-only header -->
     <div class="print-header">
       <div class="ph-banner">
-        <img src="https://i.ibb.co.com/W4rmSh0f/white-mnf2.png" alt="MNF" style="width:80px; float:left; margin-right: 15px;">
-        <div class="ph-title">Musholla Nurul Falah</div>
-        <div class="ph-mosque">Data Mustahik Qurban</div>
+        <div class="ph-mosque">Musholla Nurul Falah</div>
+        <div class="ph-title">Data Mustahik Qurban</div>
         <div class="ph-year" id="phYear"></div>
       </div>
       <div class="ph-meta" id="phMeta"></div>
     </div>
 
+    <!-- Kupon summary bar -->
+    <div class="kupon-bar" id="kuponBar">
+      <span class="kb-item kb-done">✅ Sudah: <strong>0</strong></span>
+      <span class="kb-item kb-left">⏳ Belum: <strong>0</strong></span>
+      <span class="kb-sep">|</span>
+      <span class="kb-item">Total: <strong>0</strong></span>
+    </div>
     <div class="filter-bar">
       <div class="search-box">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -854,6 +951,11 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
       <select class="filter-sel" id="filterTahun" onchange="UI.onYearChange()">
         <option value="">Semua Tahun</option>
       </select>
+      <select class="filter-sel" id="filterKupon" onchange="UI.renderTable()" style="min-width:130px">
+        <option value="">Semua Status</option>
+        <option value="sudah">✅ Sudah Kupon</option>
+        <option value="belum">⏳ Belum Kupon</option>
+      </select>
       <div class="filter-acts">
         <button class="btn btn-sm btn-primary" onclick="Exporter.activeYear()">📥 Excel</button>
         <button class="btn btn-sm btn-outline" onclick="Printer.open()">🖨 Print</button>
@@ -866,6 +968,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
         <thead>
           <tr>
             <th class="col-no">No</th>
+            <th class="col-kupon-h" title="Status pemberian kupon">Kupon</th>
             <th>Nama Mustahik</th>
             <th id="thLast">RT</th>
           </tr>
@@ -948,13 +1051,21 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
   </div>
 </div>
 
-<!-- Login Admin -->
+<!-- Login -->
 <div class="overlay" id="modalLogin">
-  <div class="modal" style="max-width:330px">
+  <div class="modal" style="max-width:350px">
     <div class="modal-ico" style="background:var(--blue-50)">🔐</div>
-    <h3>Login Admin</h3>
-    <p class="sub">Masukkan password untuk mengakses fitur manajemen data.</p>
+    <h3>Login Petugas</h3>
+    <p class="sub">Pilih akun dan masukkan password untuk mengakses sistem.</p>
     <div class="modal-form">
+      <div class="fld">
+        <label>Masuk sebagai</label>
+        <select id="loginRole">
+          <option value="admin">Admin — Akses penuh</option>
+          <option value="sekretaris">Sekretaris — Tambah, Edit, Hapus, Centang</option>
+          <option value="humas">Humas — Tambah, Edit, Centang</option>
+        </select>
+      </div>
       <div class="fld">
         <label>Password</label>
         <input type="password" id="loginPass" placeholder="••••••••"
@@ -998,11 +1109,14 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
    APP — Configuration (edit section ini untuk kustomisasi)
 ===================================================================== */
 const APP = Object.freeze({
-  VERSION:         '4.0.0',
+  VERSION:         '4.1.0',
   NAME:            'Musholla Nurul Falah',
-  GAS_URL:         'https://script.google.com/macros/s/AKfycbyNpYkhfIdqjk-p5fAPtOEn3VZdU-lUUW4bRgys1bhYgeXtr_e89E9z-pCKG1VKKeDC/exec',
+  GAS_URL:         'https://script.google.com/macros/s/AKfycbwes-0EghHEVeRgcp6f9U74aaVxX2_wawF-7PZxkYeUJOkt_1P6fRyzMTxWVab87oGUtQ/exec',
   ADMIN_PASS:      'PQMNF2026',      // ← Ganti password admin
-  SESSION_MINUTES: 60,               // Auto-logout admin setelah X menit
+  HUMAS_PASS:      'humas2026',      // ← Ganti password humas
+  SEKRETARIS_PASS: 'sekretaris2026',     // ← Ganti password sekretaris
+  SESSION_MINUTES: 60,               // Auto-logout setelah X menit
+  ROLES: { ADMIN:'admin', HUMAS:'humas', SEKRETARIS:'sekretaris', GUEST:'guest' },
   RT_LIST:         ['RT 10/04','RT 03/04','RT 04/04','RT 02/03','RT 03/03'],
   DEFAULT_YEARS:   ['1447'],
   MAX_AUDIT:       150,
@@ -1027,7 +1141,19 @@ const S = {
   years:       [...APP.DEFAULT_YEARS],
   activeYear:  APP.DEFAULT_YEARS[0],
   isOnline:    false,
-  isAdmin:     false,
+  // role: 'guest' | 'humas' | 'admin'
+  role:        'guest',
+  get isAdmin()      { return this.role === APP.ROLES.ADMIN; },
+  get isHumas()      { return this.role === APP.ROLES.HUMAS; },
+  get isSekretaris() { return this.role === APP.ROLES.SEKRETARIS; },
+  // canAdd   : bisa tambah data (semua kecuali guest)
+  get canAdd()    { return this.role !== APP.ROLES.GUEST; },
+  // canEdit  : bisa edit data & centang kupon (semua kecuali guest)
+  get canEdit()   { return this.role !== APP.ROLES.GUEST; },
+  // canDelete: hanya admin, sekretaris, dan humas
+  get canDelete() { return this.role === APP.ROLES.ADMIN || this.role === APP.ROLES.SEKRETARIS || this.role === APP.ROLES.HUMAS; },
+  // canPanel : hanya admin (import, export, kelola tahun, audit)
+  get canPanel()  { return this.role === APP.ROLES.ADMIN; },
   panelOpen:   false,
   delTarget:   null,
   delYear:     null,
@@ -1035,6 +1161,8 @@ const S = {
   sessionEnd:  null,
   sessionTimer:null,
   highlightId: null,
+  // filter kupon
+  filterKupon: '',
 };
 
 /* ====================================================================
@@ -1222,9 +1350,11 @@ const YearMgr = {
    AUTHENTICATION
 ===================================================================== */
 const Auth = {
+
   toggleLogin() {
-    if (S.isAdmin) { this.logout(); return; }
+    if (S.role !== APP.ROLES.GUEST) { this.logout(); return; }
     document.getElementById('loginPass').value = '';
+    document.getElementById('loginRole').value = APP.ROLES.ADMIN;
     document.getElementById('loginErr').style.display = 'none';
     UI.openModal('modalLogin');
     setTimeout(() => document.getElementById('loginPass').focus(), 180);
@@ -1232,42 +1362,54 @@ const Auth = {
 
   login() {
     const pass = document.getElementById('loginPass').value;
-    if (pass === APP.ADMIN_PASS) {
-      S.isAdmin = true;
+    const role = document.getElementById('loginRole').value;
+
+    const map = {
+      [APP.ROLES.ADMIN]:      APP.ADMIN_PASS,
+      [APP.ROLES.HUMAS]:      APP.HUMAS_PASS,
+      [APP.ROLES.SEKRETARIS]: APP.SEKRETARIS_PASS,
+    };
+
+    if (map[role] && pass === map[role]) {
+      S.role = role;
       S.sessionEnd = Date.now() + APP.SESSION_MINUTES * 60 * 1000;
       UI.closeModal('modalLogin');
       document.getElementById('loginPass').value = '';
       document.getElementById('loginErr').style.display = 'none';
       UI.applyAdmin();
       this._startTimer();
-      Audit.add('sys', 'Admin login berhasil');
-      toast('✅ Selamat datang, Admin!', 'success');
+      const labels = { admin:'Admin', humas:'Humas', sekretaris:'Sekretaris' };
+      const label = labels[role] || role;
+      Audit.add('sys', label + ' login berhasil');
+      toast('✅ Selamat datang, ' + label + '!', 'success');
     } else {
       document.getElementById('loginErr').style.display = 'block';
       document.getElementById('loginPass').value = '';
       document.getElementById('loginPass').focus();
-      Audit.add('sys', 'Percobaan login gagal');
+      Audit.add('sys', 'Percobaan login gagal (' + role + ')');
     }
   },
 
   logout() {
     clearInterval(S.sessionTimer);
-    S.isAdmin = false; S.panelOpen = false;
+    const wasRole = S.role;
+    S.role = APP.ROLES.GUEST;
+    S.panelOpen = false;
     UI.applyAdmin();
     UI.renderTable();
-    Audit.add('sys', 'Admin logout');
-    toast('👋 Sesi admin diakhiri', 'info');
+    Audit.add('sys', wasRole + ' logout');
+    toast('👋 Sesi diakhiri', 'info');
   },
 
   _startTimer() {
     clearInterval(S.sessionTimer);
     S.sessionTimer = setInterval(() => {
       const rem = S.sessionEnd - Date.now();
-      if (rem <= 0) { this.logout(); toast('⏱ Sesi admin habis, silakan login ulang', 'warn'); return; }
+      if (rem <= 0) { this.logout(); toast('⏱ Sesi habis, silakan login ulang', 'warn'); return; }
       const m = Math.floor(rem / 60000);
       const s = Math.floor((rem % 60000) / 1000);
       const el = document.getElementById('sessionChip');
-      if (el) el.textContent = `Sesi: ${m}:${String(s).padStart(2,'0')}`;
+      if (el) el.textContent = 'Sesi: ' + m + ':' + String(s).padStart(2,'0');
     }, 1000);
   },
 };
@@ -1432,6 +1574,7 @@ const DataMgr = {
   },
 
   async submit() {
+    if (!S.canAdd) { toast('🔒 Anda tidak memiliki akses untuk menambah data', 'error'); return; }
     const nEl   = document.getElementById('inputNama');
     const rtEl  = document.getElementById('inputRT');
     const thnEl = document.getElementById('inputTahun');
@@ -1507,6 +1650,48 @@ const DataMgr = {
       toast('❌ Gagal menyimpan: ' + e.message, 'error');
     } finally {
       setLoading('btnSave', 'btnSaveLbl', 'btnSaveSpin', false);
+    }
+  },
+
+  // Toggle status kupon mustahik
+  toggleKupon(id) {
+    const idx = S.data.findIndex(x => x.id === id);
+    if (idx === -1) return;
+
+    // Toggle state
+    const prev    = !!S.data[idx].kupon;
+    const newVal  = !prev;
+    const nowISO  = newVal ? new Date().toISOString() : null;
+
+    S.data[idx].kupon    = newVal;
+    S.data[idx].kuponAt  = nowISO;
+
+    // 1. Simpan lokal SEGERA
+    Store.saveData();
+
+    // 2. Update UI
+    UI.renderTable();
+    UI.updateStats();
+
+    const nama   = S.data[idx].nama;
+    const status = newVal ? 'sudah' : 'belum';
+    toast((newVal ? '✅ ' : '↩️ ') + nama + ' ' + status + ' menerima kupon',
+          newVal ? 'success' : 'info');
+    Audit.add(newVal ? 'add' : 'edit', 'Kupon ' + status + ': ' + nama);
+
+    // 3. Sync ke Google Sheets di background
+    if (Api.isConfigured()) {
+      const params = {
+        action:  'updateKupon',
+        id:      id,
+        kupon:   String(newVal),
+        kuponAt: nowISO || '',
+      };
+      if (S.isOnline) {
+        Api.postBackground(params).catch(() => Api.enqueue(params));
+      } else {
+        Api.enqueue(params);
+      }
     }
   },
 
@@ -1631,68 +1816,252 @@ const DataMgr = {
    IMPORTER
 ===================================================================== */
 const Importer = {
-  dragOver(e)  { e.preventDefault(); document.getElementById('dropZone').classList.add('drag'); },
-  dragLeave()  { document.getElementById('dropZone').classList.remove('drag'); },
-  drop(e)      { e.preventDefault(); document.getElementById('dropZone').classList.remove('drag'); const f=e.dataTransfer.files[0]; if(f)this._process(f); },
-  handleFile(e){ const f=e.target.files[0]; if(f)this._process(f); },
+  // State
+  selectedRTs: [],
+  parsedNames: [],  // {nama, rt, tahun, isDup}
 
-  _process(file) {
+  /* ── Init RT grid di panel ── */
+  initRTGrid() {
+    const grid = document.getElementById('impRTGrid');
+    if (!grid) return;
+    grid.innerHTML = APP.RT_LIST.map(rt =>
+      '<button class="imp-rt-btn" id="impRT_' + rt.replace(' ','_') + '" ' +
+      'onclick="Importer.toggleRT(\'' + rt + '\')">' + rt + '</button>'
+    ).join('');
+    // Sync tahun dropdown
+    const sel = document.getElementById('impTahun');
+    if (sel) {
+      sel.innerHTML = S.years.map(y => '<option value="' + y + '">' + y + ' H</option>').join('');
+      sel.value = S.activeYear;
+    }
+  },
+
+  toggleRT(rt) {
+    if (this.selectedRTs.includes(rt)) {
+      this.selectedRTs = this.selectedRTs.filter(r => r !== rt);
+    } else {
+      this.selectedRTs.push(rt);
+    }
+    this._refreshRTButtons();
+    this.parseText();
+  },
+
+  selectAllRT() {
+    this.selectedRTs = [...APP.RT_LIST];
+    this._refreshRTButtons();
+    this.parseText();
+  },
+
+  clearRT() {
+    this.selectedRTs = [];
+    this._refreshRTButtons();
+    this.parseText();
+  },
+
+  _refreshRTButtons() {
+    APP.RT_LIST.forEach(rt => {
+      const btn = document.getElementById('impRT_' + rt.replace(' ','_'));
+      if (btn) btn.classList.toggle('sel', this.selectedRTs.includes(rt));
+    });
+  },
+
+  /* ── Parse textarea: satu nama per baris ── */
+  parseText() {
+    const raw  = (document.getElementById('impTextarea') || {}).value || '';
+    const thn  = (document.getElementById('impTahun') || {}).value || S.activeYear;
+    const lines = raw.split('\n').map(l => l.trim().replace(/\t/g,'')).filter(Boolean);
+
+    // Validasi: minimal 1 RT dipilih
+    const errEl = document.getElementById('errImport');
+    if (this.selectedRTs.length === 0) {
+      if (errEl) { errEl.textContent = '⚠ Pilih minimal 1 RT terlebih dahulu'; errEl.style.display = 'block'; }
+      this.parsedNames = [];
+      this._renderPreview();
+      return;
+    }
+    if (errEl) errEl.style.display = 'none';
+
+    // Distribusi nama ke RT yang dipilih (round-robin jika multi RT)
+    this.parsedNames = [];
+    lines.forEach((line, i) => {
+      if (!line) return;
+      const nama = capName(line);
+      // Distribusikan ke RT: jika 1 RT → semua ke RT itu; jika multi → round-robin
+      const rt   = this.selectedRTs.length === 1
+        ? this.selectedRTs[0]
+        : this.selectedRTs[i % this.selectedRTs.length];
+      const isDup = isDuplicate(nama, thn);
+      this.parsedNames.push({ nama, rt, tahun: thn, isDup });
+    });
+
+    this._renderPreview();
+    document.getElementById('btnImport').disabled = this.parsedNames.length === 0;
+  },
+
+  /* ── Render preview per RT ── */
+  _renderPreview() {
+    const wrap = document.getElementById('impPreviewWrap');
+    const det  = document.getElementById('impPreviewDetail');
+    if (!wrap || !det) return;
+
+    if (!this.parsedNames.length) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+
+    const newOnes  = this.parsedNames.filter(r => !r.isDup);
+    const dups     = this.parsedNames.filter(r =>  r.isDup);
+
+    // Summary bar
+    let html = '<div class="imp-summary">' +
+      '<span class="imp-sum-item imp-sum-tot">📋 Total: <strong>' + this.parsedNames.length + '</strong></span>' +
+      '<span class="imp-sum-item imp-sum-new">✅ Baru: <strong>' + newOnes.length + '</strong></span>' +
+      (dups.length ? '<span class="imp-sum-item imp-sum-dup">⚠ Duplikat (dilewati): <strong>' + dups.length + '</strong></span>' : '') +
+    '</div>';
+
+    // Group per RT
+    const byRT = {};
+    this.parsedNames.forEach(r => { if (!byRT[r.rt]) byRT[r.rt] = []; byRT[r.rt].push(r); });
+    sortRT(Object.keys(byRT)).forEach(rt => {
+      html += '<div class="imp-prev-group">';
+      html += '<div class="imp-prev-rt">' + rt + ' — ' + byRT[rt].length + ' nama</div>';
+      byRT[rt].forEach((r, i) => {
+        html += '<div class="imp-prev-row">' +
+          '<span class="imp-prev-no">' + (i+1) + '</span>' +
+          '<span class="imp-prev-name">' + esc(r.nama) + '</span>' +
+          (r.isDup
+            ? '<span class="imp-prev-dup">DUPLIKAT</span>'
+            : '<span class="imp-prev-new">BARU</span>') +
+        '</div>';
+      });
+      html += '</div>';
+    });
+
+    det.innerHTML = html;
+  },
+
+  /* ── Paste dari clipboard ── */
+  async pasteClipboard() {
+    try {
+      const text = await navigator.clipboard.readText();
+      const ta = document.getElementById('impTextarea');
+      if (ta) { ta.value = text; this.parseText(); }
+    } catch {
+      toast('⚠ Izin clipboard ditolak. Paste manual dengan Ctrl+V', 'warn');
+    }
+  },
+
+  clearText() {
+    const ta = document.getElementById('impTextarea');
+    if (ta) ta.value = '';
+    this.parsedNames = [];
+    this._renderPreview();
+    document.getElementById('btnImport').disabled = true;
+  },
+
+  /* ── Handle file CSV ── */
+  handleFile(e) { const f = e.target.files[0]; if (f) this._readFile(f); },
+  dragOver(e)   { e.preventDefault(); document.getElementById('dropZone') && document.getElementById('dropZone').classList.add('drag'); },
+  dragLeave()   { document.getElementById('dropZone') && document.getElementById('dropZone').classList.remove('drag'); },
+  drop(e)       { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) this._readFile(f); },
+
+  _readFile(file) {
     const r = new FileReader();
     r.onload = e => {
-      const lines = e.target.result.replace(/\r/g,'').split('\n').map(l=>l.trim()).filter(Boolean);
-      // Skip header if present
-      const start = lines[0] && /^nama/i.test(lines[0].split(',')[0]) ? 1 : 0;
-      S.importRows = []; let errs = 0;
-      lines.slice(start).forEach(line => {
-        const p = line.split(',').map(x => x.trim().replace(/^["']|["']$/g,''));
-        const nama  = capName(p[0]||'');
-        const rt    = p[1]||'';
-        const tahun = (p[2]||S.activeYear).replace(/\D/g,'');
-        if (nama && APP.RT_LIST.includes(rt) && /^\d{4}$/.test(tahun)) {
-          S.importRows.push({ nama, rt, tahun });
-        } else errs++;
-      });
-      const prev = document.getElementById('importPreview');
-      prev.style.display = 'block';
-      prev.innerHTML = `<strong>${S.importRows.length}</strong> baris valid, <strong>${errs}</strong> diabaikan.` +
-        (S.importRows.length ? `<br>Pratinjau: ${S.importRows.slice(0,3).map(r=>r.nama+' ('+r.rt+', '+r.tahun+' H)').join('; ')}${S.importRows.length>3?'...':''}` : '');
-      document.getElementById('btnImport').disabled = !S.importRows.length;
-      document.getElementById('errImport').style.display = 'none';
-      if (!S.importRows.length) showErr('errImport', 'Tidak ada baris valid. Cek format CSV.');
-      document.getElementById('dropZoneText').textContent = `📄 ${file.name}  (${S.importRows.length} data siap import)`;
+      const raw  = e.target.result;
+      const lines = raw.replace(/\r/g,'').split('\n').map(l => l.trim()).filter(Boolean);
+      // Deteksi apakah ada header "Nama,RT,Tahun"
+      const firstLower = lines[0] ? lines[0].toLowerCase() : '';
+      const hasHeader  = firstLower.startsWith('nama') || firstLower.startsWith('no');
+      const dataLines  = hasHeader ? lines.slice(1) : lines;
+
+      // Cek apakah CSV multi-kolom (ada koma/tab)
+      const isCSV = dataLines.some(l => l.includes(',') || l.includes('\t'));
+
+      let names = [];
+      if (isCSV) {
+        // Format CSV: Nama,RT,Tahun
+        dataLines.forEach(line => {
+          const p = line.split(',').map(x => x.trim().replace(/^["\']+|["\']+$/g,''));
+          if (p[0]) {
+            // Jika ada RT di kolom 2, gunakan; jika tidak pakai RT yang dipilih
+            if (p[1] && APP.RT_LIST.includes(p[1]) && !this.selectedRTs.length) {
+              // Auto-pilih RT dari file
+              if (!this.selectedRTs.includes(p[1])) {
+                this.selectedRTs.push(p[1]);
+                this._refreshRTButtons();
+              }
+            }
+            names.push(p[0]);
+          }
+        });
+      } else {
+        // Format plain text: satu nama per baris
+        names = dataLines.map(l => l.trim()).filter(Boolean);
+      }
+
+      const ta = document.getElementById('impTextarea');
+      if (ta) { ta.value = names.join('\n'); this.parseText(); }
+      toast('📂 File dibaca: ' + names.length + ' nama ditemukan', 'info');
     };
     r.readAsText(file, 'UTF-8');
   },
 
+  /* ── Eksekusi import ── */
   async execute() {
-    if (!S.importRows.length) return;
-    let added = 0, dupes = 0;
-    S.importRows.forEach(row => {
-      if (isDuplicate(row.nama, row.tahun)) { dupes++; return; }
-      S.data.push({ id:genId(), nama:row.nama, rt:row.rt, tahun:row.tahun, createdAt:new Date().toISOString() });
+    const toImport = this.parsedNames.filter(r => !r.isDup);
+    if (!toImport.length) {
+      toast('⚠ Tidak ada data baru untuk diimport (semua duplikat)', 'warn'); return;
+    }
+
+    let added = 0;
+    toImport.forEach(row => {
+      // Double-check duplikat saat eksekusi
+      if (isDuplicate(row.nama, row.tahun)) return;
+      S.data.push({
+        id: genId(), nama: row.nama, rt: row.rt,
+        tahun: row.tahun, createdAt: new Date().toISOString()
+      });
       added++;
     });
-    Store.saveData(); UI.renderTable(); UI.updateStats();
+
+    Store.saveData();
+    UI.renderTable(); UI.updateStats();
     document.getElementById('totalCount').textContent = S.data.length;
-    if (S.isOnline && Api.isConfigured()) {
-      try { await Api.post({ action:'import', data:JSON.stringify(S.importRows) }); }
-      catch { S.importRows.forEach(r=>Api.enqueue({action:'add',nama:r.nama,rt:r.rt,tahun:r.tahun})); }
-    } else {
-      S.importRows.forEach(r => Api.enqueue({action:'add',nama:r.nama,rt:r.rt,tahun:r.tahun}));
+
+    // Sync ke server
+    if (Api.isConfigured()) {
+      const payload = toImport.map(r => ({ nama:r.nama, rt:r.rt, tahun:r.tahun }));
+      if (S.isOnline) {
+        Api.postBackground({ action:'import', data:JSON.stringify(payload) }).catch(() => {
+          payload.forEach(p => Api.enqueue({ action:'add', ...p }));
+        });
+      } else {
+        payload.forEach(p => Api.enqueue({ action:'add', ...p }));
+      }
     }
-    Audit.add('add', `Import: ${added} ditambahkan, ${dupes} duplikat dilewati`);
-    toast(`📤 Import selesai: ${added} data ditambahkan`, 'success');
-    if (dupes) toast(`ℹ ${dupes} data duplikat dilewati`, 'info');
+
+    Audit.add('add', 'Import: ' + added + ' mustahik baru (' + this.selectedRTs.join(', ') + ')');
+    toast('✅ ' + added + ' mustahik berhasil diimport', 'success');
+    if (this.parsedNames.length - added > 0)
+      toast('ℹ ' + (this.parsedNames.length - added) + ' duplikat dilewati', 'info');
+
     this.clear();
   },
 
+  /* ── Reset semua ── */
   clear() {
-    S.importRows = [];
-    document.getElementById('importFile').value = '';
-    document.getElementById('dropZoneText').textContent = '📂 Klik atau seret file CSV ke sini';
-    document.getElementById('importPreview').style.display = 'none';
-    document.getElementById('errImport').style.display = 'none';
-    document.getElementById('btnImport').disabled = true;
+    this.parsedNames = [];
+    this.selectedRTs = [];
+    this._refreshRTButtons();
+    const ta = document.getElementById('impTextarea');
+    if (ta) ta.value = '';
+    const fw = document.getElementById('impPreviewWrap');
+    if (fw) fw.style.display = 'none';
+    const fe = document.getElementById('errImport');
+    if (fe) fe.style.display = 'none';
+    const fb = document.getElementById('btnImport');
+    if (fb) fb.disabled = true;
+    const fi = document.getElementById('importFile');
+    if (fi) fi.value = '';
   },
 };
 
@@ -1990,7 +2359,7 @@ const Exporter = {
   <!-- FOOTER -->
   <div class="doc-foot">
     <span>Dicetak: ${nowFull}</span>
-    <span>${APP.NAME} — Sistem Manajemen Mustahik Qurban v${APP.VERSION}</span>
+    <span>${APP.NAME} — Sistem Manajemen Data Mustahik v${APP.VERSION}</span>
   </div>
 
 <script>
@@ -2198,7 +2567,7 @@ const Exporter = {
     <div class="kop-div"></div>
     <div class="kop-txt">
       <div class="org">Panitia Qurban</div>
-      <div class="name">Musholla Nurul Falah</div>
+      <div class="name">Nurul Falah</div>
       <div class="addr">Jl. — · RT/RW — · Kec. — · Kab/Kota —</div>
       <div class="deco">
         <span class="dl l"></span><span class="dstar">✦ ✦ ✦</span><span class="dl r"></span>
@@ -2214,7 +2583,7 @@ const Exporter = {
   </div>
 
   <div class="doc-title">
-    <div class="ttl">Data Mustahik Qurban — Per RT</div>
+    <div class="ttl">Daftar Mustahik Qurban — Per RT</div>
     <div class="sub">${sub}</div>
     <div class="ttl-line"></div>
   </div>
@@ -2250,7 +2619,7 @@ const Exporter = {
 
   <div class="doc-foot">
     <span>Dicetak: ${nowFull}</span>
-    <span>${APP.NAME} — Sistem Data Manajemen Mustahik v${APP.VERSION}</span>
+    <span>${APP.NAME} — Sistem Manajemen Data Mustahik v${APP.VERSION}</span>
   </div>
 
   <script>window.onload=function(){window.focus()};<\/script>
@@ -2267,7 +2636,7 @@ const Exporter = {
 
   /* ── Template import ── */
   template() {
-    const csv = 'Nama Mustahik,RT,Tahun\nAhmad Maulana,RT 10/04,1447\nSiti Aminah,RT 03/04,1447\nBudi Santoso,RT 04/04,1447';
+    const csv = 'Nama Mustahik,RT,Tahun\nTom Cruise,RT 10/04,1447\nDewa Bujana,RT 03/04,1447\nJoko Mulyono,RT 04/04,1447';
     const blob = new Blob(['\uFEFF'+csv], { type:'text/csv;charset=utf-8;' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob); a.download = 'Template_Import_Mustahik.csv'; a.click();
@@ -2635,30 +3004,23 @@ const Printer = {
 
   <!-- KOP SURAT -->
   <div class="kop">
-    <!-- Logo Musholla (SVG inline) -->
-    <div class="kop-logo">
-      <img src="https://i.ibb.co.com/KpLTpmnn/logo-mnf-new-ijo.png" alt="MNF" style="width:50px; float:left; margin-right:10px;">
-    </div>
-
-    <div class="kop-divider"></div>
-
-    <!-- Teks Kop -->
-    <div class="kop-text">
+    <img src="https://i.ibb.co.com/KpLTpmnn/logo-mnf-new-ijo.png" alt="kop" style="width:50px; float:left; margin-right:10px;">
+    <div class="kop-div"></div>
+    <div class="kop-txt">
       <div class="org">Panitia Qurban</div>
-      <div class="mosque">Musholla Nurul Falah</div>
-      <div class="address">Jl. Pahlawan RT10/04 Sukabumi Selatan Kebon Jeruk Jakarta Barat</div>
+      <div class="name">Musholla Nurul Falah</div>
+      <div class="addr">Jl. Pahlawan RT10/04 Sukabumi Selatan Kebon Jeruk Jakarta Barat</div>
       <div class="deco">
-        <span class="deco-line"></span>
+        <span class="deco-ln l"></span>
         <span class="deco-star">✦ ✦ ✦</span>
-        <span class="deco-line r"></span>
+        <span class="deco-ln r"></span>
       </div>
     </div>
-
-    <div class="kop-divider" style="background:linear-gradient(to bottom,transparent,#1a4f7a 20%,#1a4f7a 80%,transparent)"></div>
-
-    <!-- Sisi kanan: nomor surat / info opsional -->
+    <div class="kop-div"></div>
     <div class="kop-right">
-      <img src="https://i.ibb.co.com/KpLTpmnn/logo-mnf-new-ijo.png" alt="MNF" style="width:50px; float:left; margin-right:10px;">
+      <img src="https://i.ibb.co.com/KpLTpmnn/logo-mnf-new-ijo.png" alt="kop" style="width:50px; float:left; margin-right:10px;">
+        <circle cx="50" cy="50" r="48" fill="#1a4f7a"/>
+        <text x="50" y="62" text-anchor="middle" font-family="Arial" font-size="48" fill="#fff"></text>
     </div>
   </div>
 
@@ -2779,60 +3141,86 @@ const UI = {
   },
 
   renderTable() {
-    const search = document.getElementById('searchInput').value.trim().toLowerCase();
-    const fRT    = document.getElementById('filterRT').value;
-    const fThn   = document.getElementById('filterTahun').value;
+    const search  = document.getElementById('searchInput').value.trim().toLowerCase();
+    const fRT     = document.getElementById('filterRT').value;
+    const fThn    = document.getElementById('filterTahun').value;
+    const fKupon  = (document.getElementById('filterKupon') || {}).value || '';
 
     const filtered = S.data.filter(d =>
-      (!search || d.nama.toLowerCase().includes(search)) &&
-      (!fRT    || d.rt === fRT) &&
-      (!fThn   || (d.tahun||APP.DEFAULT_YEARS[0]) === fThn)
+      (!search  || d.nama.toLowerCase().includes(search)) &&
+      (!fRT     || d.rt === fRT) &&
+      (!fThn    || (d.tahun||APP.DEFAULT_YEARS[0]) === fThn) &&
+      (!fKupon  || (fKupon === 'sudah' ? !!d.kupon : !d.kupon))
     ).sort((a,b) => {
       const rA=parseInt(a.rt.replace(/\D/g,''))||0, rB=parseInt(b.rt.replace(/\D/g,''))||0;
       return rA!==rB ? rA-rB : a.nama.localeCompare(b.nama,'id');
     });
 
-    // Column header
-    const thL = document.getElementById('thLast');
-    if (fRT) thL.textContent = S.isAdmin ? 'Aksi' : '';
-    else     thL.textContent = S.isAdmin ? 'RT / Aksi' : 'RT';
+    const thL    = document.getElementById('thLast');
+    const canAct = S.canEdit;
+    thL.textContent = fRT ? (canAct ? 'Aksi' : '') : (canAct ? 'RT / Aksi' : 'RT');
+
+    // Update kupon summary bar
+    const totalKupon = S.data.filter(d => (!fThn||(d.tahun||APP.DEFAULT_YEARS[0])===fThn) && !!d.kupon).length;
+    const totalFilt  = S.data.filter(d => (!fThn||(d.tahun||APP.DEFAULT_YEARS[0])===fThn)).length;
+    const kb = document.getElementById('kuponBar');
+    if (kb) kb.innerHTML =
+      '<span class="kb-item kb-done">✅ Sudah: <strong>' + totalKupon + '</strong></span>' +
+      '<span class="kb-item kb-left">⏳ Belum: <strong>' + (totalFilt-totalKupon) + '</strong></span>' +
+      '<span class="kb-sep">|</span>' +
+      '<span class="kb-item">Total: <strong>' + totalFilt + '</strong></span>';
 
     const tbody = document.getElementById('tableBody');
     if (!filtered.length) {
-      tbody.innerHTML = `<tr><td colspan="3">
-        <div class="tbl-empty">
-          <div class="empty-ico">${S.data.length ? '🔍' : '📋'}</div>
-          <p>${S.data.length
-            ? 'Tidak ada data yang sesuai filter.<br>Coba ubah atau hapus filter.'
-            : 'Belum ada data mustahik.<br>Gunakan form di atas untuk menambahkan.'}</p>
-        </div></td></tr>`;
+      tbody.innerHTML = '<tr><td colspan="4"><div class="tbl-empty">' +
+        '<div class="empty-ico">' + (S.data.length ? '🔍' : '📋') + '</div><p>' +
+        (S.data.length ? 'Tidak ada data yang sesuai filter.' :
+         'Belum ada data mustahik.<br>Gunakan form di atas.') + '</p></div></td></tr>';
     } else {
       tbody.innerHTML = filtered.map((d, i) => {
-        const isNew  = d.id === S.highlightId;
-        const adminBtns = S.isAdmin
-          ? `<button class="btn btn-xs btn-outline" onclick="DataMgr.openEdit('${d.id}')" title="Edit data">✏️</button>
-             <button class="btn btn-xs btn-danger" onclick="DataMgr.openDelete('${d.id}')" title="Hapus data">🗑</button>`
+        const sudah   = !!d.kupon;
+        const tgl     = d.kuponAt ? ' · ' + new Date(d.kuponAt).toLocaleDateString('id-ID') : '';
+        const isNew   = d.id === S.highlightId;
+
+        const canKupon = S.canEdit; // semua login bisa centang
+        const kuponBtn = canKupon
+          ? '<button class="btn-kupon ' + (sudah?'done':'undone') + '" ' +
+            'onclick="DataMgr.toggleKupon(\'' + d.id + '\')" ' +
+            'title="' + (sudah ? 'Sudah terima kupon' + tgl + ' — klik untuk batalkan' : 'Klik untuk tandai sudah terima kupon') + '">' +
+            (sudah ? '✅' : '⬜') + '</button>'
+          : '<span class="kupon-view ' + (sudah?'done':'no') + '" title="' + (sudah?'Sudah'+tgl:'Belum') + '">' +
+            (sudah ? '✅' : '⬜') + '</span>';
+
+        const editBtn = S.canEdit
+          ? '<button class="btn btn-xs btn-outline" onclick="DataMgr.openEdit(\'' + d.id + '\')" title="Edit">✏️</button>'
           : '';
-        const col3 = fRT
-          ? `<td class="col-act">${adminBtns || '<span class="lock-ico" title="Login admin untuk edit/hapus">🔒</span>'}</td>`
-          : `<td><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
-              <span class="rt-pill">${esc(d.rt)}</span>${adminBtns}
-             </div></td>`;
-        return `<tr${isNew ? ' class="row-new"' : ''}>
-          <td class="col-no">${i+1}</td>
-          <td class="col-name">${esc(d.nama)}</td>
-          ${col3}
-        </tr>`;
+        const delBtn = S.canDelete
+          ? '<button class="btn btn-xs btn-danger" onclick="DataMgr.openDelete(\'' + d.id + '\')" title="Hapus">🗑</button>'
+          : '';
+
+        const col4 = fRT
+          ? '<td class="col-act">' + (canAct ? (editBtn + delBtn) : '<span class="lock-ico">🔒</span>') + '</td>'
+          : '<td><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
+            '<span class="rt-pill">' + esc(d.rt) + '</span>' + editBtn + delBtn + '</div></td>';
+
+        const rowCls = isNew ? 'row-new' : (sudah ? 'row-done' : '');
+        return '<tr' + (rowCls ? ' class="'+rowCls+'"' : '') + '>' +
+          '<td class="col-no">' + (i+1) + '</td>' +
+          '<td class="col-kupon">' + kuponBtn + '</td>' +
+          '<td class="col-name">' + esc(d.nama) +
+            (sudah && d.kuponAt ? '<div class="kupon-time">kupon ' + new Date(d.kuponAt).toLocaleDateString('id-ID') + '</div>' : '') +
+          '</td>' +
+          col4 + '</tr>';
       }).join('');
     }
     S.highlightId = null;
 
-    // Footer
     const parts = [];
-    if (fThn) parts.push(fThn+' H');
-    if (fRT)  parts.push(fRT);
-    if (search) parts.push(`"${search}"`);
-    document.getElementById('tblInfo').textContent = `Menampilkan ${filtered.length} dari ${S.data.length} data`;
+    if (fThn)   parts.push(fThn+' H');
+    if (fRT)    parts.push(fRT);
+    if (fKupon) parts.push(fKupon==='sudah'?'Sudah Kupon':'Belum Kupon');
+    if (search) parts.push('"'+search+'"');
+    document.getElementById('tblInfo').textContent = 'Menampilkan '+filtered.length+' dari '+S.data.length+' data';
     document.getElementById('filterInfo').textContent = parts.length ? 'Filter: '+parts.join(' · ') : '';
   },
 
@@ -2869,18 +3257,44 @@ const UI = {
     const dot   = document.getElementById('adminDot');
     const bar   = document.getElementById('adminBar');
     const panel = document.getElementById('adminPanel');
+    const lbl   = document.getElementById('adminToggleLabel');
+    const notif = document.getElementById('adminBarLabel');
 
-    if (S.isAdmin) {
+    // Tampilkan/sembunyikan form tambah data
+    const fc = document.getElementById('formCard');
+    if (fc) fc.style.display = S.canAdd ? 'block' : 'none';
+
+    if (S.canEdit) {
       tog.classList.add('on');
-      dot.style.cssText = 'background:#6ee7b7;box-shadow:0 0 6px #6ee7b7';
-      document.getElementById('adminToggleLabel').textContent = '🔐 Admin';
+      const roleStyle = {
+        admin:      { dot:'background:#6ee7b7;box-shadow:0 0 6px #6ee7b7', cls:'',         lbl:'Admin',       notif:'Mode Admin Aktif' },
+        sekretaris: { dot:'background:#a78bfa;box-shadow:0 0 6px #a78bfa', cls:'sekretaris',lbl:'Sekretaris',   notif:'Mode Sekretaris — Tambah, Edit, Hapus, Centang' },
+        humas:      { dot:'background:#fcd34d;box-shadow:0 0 6px #fcd34d', cls:'humas',     lbl:'Humas',        notif:'Mode Humas — Tambah, Edit, Centang' },
+      };
+      const rs = roleStyle[S.role] || roleStyle.humas;
+      dot.style.cssText = rs.dot;
+      tog.classList.remove('humas','sekretaris');
+      if (rs.cls) tog.classList.add(rs.cls);
+      lbl.textContent = rs.lbl;
+      if (notif) notif.textContent = rs.notif;
       bar.classList.add('on');
-      panel.classList.toggle('on', S.panelOpen);
-      YearMgr.renderPills(); Audit.render();
+      // Panel admin hanya untuk admin
+      if (S.canPanel) {
+        panel.classList.toggle('on', S.panelOpen);
+        const ptBtn = document.getElementById('panelToggleBtn');
+        if (ptBtn) ptBtn.style.display = 'inline-flex';
+        YearMgr.renderPills(); Audit.render();
+      } else {
+        panel.classList.remove('on');
+        const ptBtn = document.getElementById('panelToggleBtn');
+        if (ptBtn) ptBtn.style.display = 'none';
+      }
     } else {
+      // GUEST: sembunyikan form, panel, bar
       tog.classList.remove('on');
+      tog.classList.remove('humas','sekretaris');
       dot.style.cssText = '';
-      document.getElementById('adminToggleLabel').textContent = 'Login Admin';
+      lbl.textContent = 'Login';
       bar.classList.remove('on');
       panel.classList.remove('on');
       document.getElementById('sessionChip').textContent = '';
@@ -2892,7 +3306,7 @@ const UI = {
     S.panelOpen = !S.panelOpen;
     document.getElementById('adminPanel').classList.toggle('on', S.panelOpen);
     document.getElementById('panelToggleBtn').textContent = S.panelOpen ? '✕ Tutup Panel' : '⚙️ Panel Admin';
-    if (S.panelOpen) { YearMgr.renderPills(); Audit.render(); }
+    if (S.panelOpen) { YearMgr.renderPills(); Audit.render(); Importer.initRTGrid(); }
   },
 
   openModal(id)  { document.getElementById(id).classList.add('on');  document.body.style.overflow='hidden'; },
@@ -2964,6 +3378,9 @@ window.Exporter  = Exporter;
 window.Printer   = Printer;
 window.UI        = UI;
 window.Audit     = Audit;
+// Helper expose untuk importer RT toggle (called from dynamic HTML)
+window.sortRT    = sortRT;
+window.isDuplicate = isDuplicate;
 
 })();
 </script>
