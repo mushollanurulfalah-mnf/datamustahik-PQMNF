@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#1a4f7a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Daya Mustahik Qurban · Musholla Nurul Falah</title>
+<title>Aplikasi Humas - Manajemen Data Mustahik Qurban MNF</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -737,13 +737,13 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
     <img src="https://i.ibb.co.com/W4rmSh0f/white-mnf2.png" alt="MNF" style="width:38px;height:38px;filter:drop-shadow(0 1px 4px rgba(201,162,39,.35))">
     <div class="header-text">
       <h1>Musholla Nurul Falah</h1>
-      <p>Sistem Manajemen Data Mustahik</p>
+      <p>Aplikasi Humas - Sistem Manajemen Data Mustahik</p>
     </div>
     <div class="header-right">
       <div class="year-chip" id="yearChip">— H</div>
       <button class="admin-toggle" id="adminToggle" onclick="Auth.toggleLogin()">
         <span class="admin-dot" id="adminDot"></span>
-        <span id="adminToggleLabel">Login Admin</span>
+        <span id="adminToggleLabel">Login</span>
       </button>
     </div>
   </div>
@@ -789,8 +789,8 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
     </div>
   </div>
 
-  <!-- FORM INPUT (selalu tampil) -->
-  <div class="card" id="formCard">
+  <!-- FORM INPUT (tampil hanya untuk humas, sekretaris, admin) -->
+  <div class="card" id="formCard" style="display:none">
     <div class="card-head">
       <div class="card-ico">➕</div>
       <div class="card-lbl">Tambah Data Mustahik</div>
@@ -865,7 +865,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
         <!-- Step 2: Input nama mustahik -->
         <div class="imp-step" id="impStep2" style="margin-top:14px">
           <div class="imp-step-label">② Input nama mustahik (satu nama per baris)</div>
-          <textarea id="impTextarea" rows="8" placeholder="Ahmad Albar&#10;Michael Jaksn&#10;Dewi Persik&#10;..."
+          <textarea id="impTextarea" rows="8" placeholder="Tom Cruise&#10;Sahrukhan&#10;Dewi Persik&#10;..."
             oninput="Importer.parseText()"
             style="width:100%;padding:10px 12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-m);
               font-family:inherit;font-size:.875rem;resize:vertical;outline:none;transition:.2s;background:var(--gray-50)"></textarea>
@@ -903,6 +903,11 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
           <button class="btn btn-sm btn-outline" onclick="Exporter.perRT()">📥 Excel — Per RT / Filter</button>
           <hr>
           <button class="btn btn-sm btn-ghost" onclick="Printer.open()">🖨 Cetak / Print PDF</button>
+          <hr>
+          <div style="font-size:.71rem;color:var(--gray-500);margin-bottom:4px;font-weight:600">⚠ ZONA BERBAHAYA</div>
+          <button class="btn btn-sm btn-danger" onclick="DataMgr.deleteAll()" style="width:100%">
+            🗑 Hapus Semua Data (sesuai filter)
+          </button>
         </div>
       </div>
 
@@ -1011,6 +1016,29 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
   MODALS
 ================================================================ -->
 
+<!-- Delete ALL Modal -->
+<div class="overlay" id="modalDeleteAll">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-ico" style="background:var(--red-100)">⚠️</div>
+    <h3 style="color:var(--red-600)">Hapus Semua Data?</h3>
+    <p class="sub">
+      Anda akan menghapus <strong style="color:var(--red-600)"><span id="deleteAllLabel">0</span> data</strong>
+      dari <strong><span id="deleteAllFilter"></span></strong>.<br><br>
+      Tindakan ini <strong>tidak dapat dibatalkan</strong>. Pastikan sudah melakukan backup terlebih dahulu.
+    </p>
+    <div class="fld" style="margin-bottom:16px">
+      <label>Ketik <strong>HAPUS SEMUA</strong> untuk konfirmasi</label>
+      <input type="text" id="deleteAllConfirmInput" placeholder="HAPUS SEMUA"
+        oninput="document.getElementById('btnConfirmDeleteAll').disabled = this.value !== 'HAPUS SEMUA'"
+        style="margin-top:6px">
+    </div>
+    <div class="modal-acts">
+      <button class="btn btn-ghost" onclick="UI.closeModal('modalDeleteAll');document.getElementById('deleteAllConfirmInput').value=''">Batal</button>
+      <button class="btn btn-danger" id="btnConfirmDeleteAll" onclick="DataMgr.confirmDeleteAll()" disabled>🗑 Ya, Hapus Semua</button>
+    </div>
+  </div>
+</div>
+
 <!-- Delete Data -->
 <div class="overlay" id="modalDelete">
   <div class="modal">
@@ -1063,7 +1091,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
         <select id="loginRole">
           <option value="admin">Admin — Akses penuh</option>
           <option value="sekretaris">Sekretaris — Tambah, Edit, Hapus, Centang</option>
-          <option value="humas">Humas — Tambah, Edit, Centang</option>
+          <option value="humas">Humas — Tambah, Edit, Hapus, Centang</option>
         </select>
       </div>
       <div class="fld">
@@ -1111,7 +1139,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 22px 20px 80px; }
 const APP = Object.freeze({
   VERSION:         '4.1.0',
   NAME:            'Musholla Nurul Falah',
-  GAS_URL:         'https://script.google.com/macros/s/AKfycbwes-0EghHEVeRgcp6f9U74aaVxX2_wawF-7PZxkYeUJOkt_1P6fRyzMTxWVab87oGUtQ/exec',
+  GAS_URL:         'https://script.google.com/macros/s/AKfycbztM1TrdFYQ7k1vP14LJoVKoO8xdSFhCSdbE-DRLLdy4Fp5LMYJrZ0Fmyz2BVAxXMaV1w/exec',
   ADMIN_PASS:      'PQMNF2026',      // ← Ganti password admin
   HUMAS_PASS:      'humas2026',      // ← Ganti password humas
   SEKRETARIS_PASS: 'sekretaris2026',     // ← Ganti password sekretaris
@@ -1146,14 +1174,18 @@ const S = {
   get isAdmin()      { return this.role === APP.ROLES.ADMIN; },
   get isHumas()      { return this.role === APP.ROLES.HUMAS; },
   get isSekretaris() { return this.role === APP.ROLES.SEKRETARIS; },
-  // canAdd   : bisa tambah data (semua kecuali guest)
-  get canAdd()    { return this.role !== APP.ROLES.GUEST; },
-  // canEdit  : bisa edit data & centang kupon (semua kecuali guest)
-  get canEdit()   { return this.role !== APP.ROLES.GUEST; },
-  // canDelete: hanya admin, sekretaris, dan humas
-  get canDelete() { return this.role === APP.ROLES.ADMIN || this.role === APP.ROLES.SEKRETARIS || this.role === APP.ROLES.HUMAS; },
-  // canPanel : hanya admin (import, export, kelola tahun, audit)
-  get canPanel()  { return this.role === APP.ROLES.ADMIN; },
+  // canAdd    : tambah data (humas, sekretaris, admin)
+  get canAdd()     { return this.role === APP.ROLES.HUMAS || this.role === APP.ROLES.SEKRETARIS || this.role === APP.ROLES.ADMIN; },
+  // canEdit   : edit data & centang kupon (humas, sekretaris, admin)
+  get canEdit()    { return this.role === APP.ROLES.HUMAS || this.role === APP.ROLES.SEKRETARIS || this.role === APP.ROLES.ADMIN; },
+  // canKupon  : centang kupon (humas, sekretaris, admin)
+  get canKupon()   { return this.role === APP.ROLES.HUMAS || this.role === APP.ROLES.SEKRETARIS || this.role === APP.ROLES.ADMIN; },
+  // canDelete : hapus data (humas, sekretaris, admin)
+  get canDelete()  { return this.role === APP.ROLES.HUMAS || this.role === APP.ROLES.SEKRETARIS || this.role === APP.ROLES.ADMIN; },
+  // canDeleteAll: hapus semua data (admin saja)
+  get canDeleteAll(){ return this.role === APP.ROLES.ADMIN; },
+  // canPanel  : panel admin (admin saja)
+  get canPanel()   { return this.role === APP.ROLES.ADMIN; },
   panelOpen:   false,
   delTarget:   null,
   delYear:     null,
@@ -1163,6 +1195,8 @@ const S = {
   highlightId: null,
   // filter kupon
   filterKupon: '',
+  // delete all targets
+  delAllTargets: [],
 };
 
 /* ====================================================================
@@ -1655,6 +1689,7 @@ const DataMgr = {
 
   // Toggle status kupon mustahik
   toggleKupon(id) {
+    if (!S.canKupon) { toast('🔒 Anda tidak memiliki akses untuk mencentang kupon', 'error'); return; }
     const idx = S.data.findIndex(x => x.id === id);
     if (idx === -1) return;
 
@@ -1695,7 +1730,61 @@ const DataMgr = {
     }
   },
 
+  /* ── Hapus semua data (admin only) ── */
+  async deleteAll() {
+    if (!S.canDeleteAll) { toast('🔒 Hanya admin yang dapat menghapus semua data', 'error'); return; }
+    const fThn = document.getElementById('filterTahun').value;
+    const fRT  = document.getElementById('filterRT').value;
+
+    // Tentukan data yang akan dihapus
+    const targets = S.data.filter(d =>
+      (!fThn || (d.tahun || APP.DEFAULT_YEARS[0]) === fThn) &&
+      (!fRT  || d.rt === fRT)
+    );
+
+    if (!targets.length) { toast('⚠ Tidak ada data yang sesuai filter', 'warn'); return; }
+
+    const fLabel = [fThn ? fThn+' H' : 'Semua Tahun', fRT || 'Semua RT'].join(' · ');
+    document.getElementById('deleteAllLabel').textContent = targets.length;
+    document.getElementById('deleteAllFilter').textContent = fLabel;
+    S.delAllTargets = targets.map(d => d.id);
+    UI.openModal('modalDeleteAll');
+  },
+
+  async confirmDeleteAll() {
+    if (!S.canDeleteAll || !S.delAllTargets || !S.delAllTargets.length) return;
+    const btnEl = document.getElementById('btnConfirmDeleteAll');
+    btnEl.disabled = true;
+    const ids = [...S.delAllTargets];
+
+    try {
+      // Hapus di server dulu (batch)
+      if (Api.isConfigured() && S.isOnline) {
+        await Api.post({ action: 'deleteMany', ids: JSON.stringify(ids) });
+      } else if (Api.isConfigured()) {
+        ids.forEach(id => Api.enqueue({ action: 'delete', id }));
+      }
+
+      // Hapus lokal
+      S.data = S.data.filter(d => !ids.includes(d.id));
+      Store.saveData();
+      UI.renderTable(); UI.updateStats();
+      document.getElementById('totalCount').textContent = S.data.length;
+
+      Audit.add('del', 'Hapus semua: ' + ids.length + ' data (' + document.getElementById('deleteAllFilter').textContent + ')');
+      toast('🗑 ' + ids.length + ' data berhasil dihapus', 'success');
+      document.getElementById('deleteAllConfirmInput').value = '';
+      UI.closeModal('modalDeleteAll');
+    } catch (e) {
+      toast('❌ Gagal hapus semua: ' + e.message, 'error');
+    } finally {
+      btnEl.disabled = false;
+      S.delAllTargets = [];
+    }
+  },
+
   openDelete(id) {
+    if (!S.canDelete) { toast('🔒 Tidak memiliki akses hapus', 'error'); return; }
     S.delTarget = id;
     const d = S.data.find(x => x.id===id);
     document.getElementById('deleteTargetName').textContent = d ? d.nama + ` (${d.tahun||'?'} H)` : '';
@@ -1741,6 +1830,7 @@ const DataMgr = {
   },
 
   openEdit(id) {
+    if (!S.canEdit) { toast('🔒 Tidak memiliki akses edit', 'error'); return; }
     const d = S.data.find(x => x.id===id); if (!d) return;
     document.getElementById('editId').value         = id;
     document.getElementById('editOrigName').value   = d.nama;
@@ -2281,9 +2371,8 @@ const Exporter = {
     </div>
     <div class="kop-div"></div>
     <div class="kop-right">
-      <img src="https://i.ibb.co.com/KpLTpmnn/logo-mnf-new-ijo.png" alt="kop" style="width:50px; float:left; margin-right:10px;">
-        <circle cx="50" cy="50" r="48" fill="#1a4f7a"/>
-        <text x="50" y="62" text-anchor="middle" font-family="Arial" font-size="48" fill="#fff">☪</text>
+              <circle cx="50" cy="50" r="48" fill="#1a4f7a"/>
+        <text x="50" y="62" text-anchor="middle" font-family="Arial" font-size="48" fill="#fff"></text>
     </div>
   </div>
 
@@ -2350,7 +2439,7 @@ const Exporter = {
   <!-- TANDA TANGAN -->
   <div class="sign">
     <div class="sign-box">
-      <div class="sign-city">Jakarta, ${now}</div>
+      <div class="sign-city">Ja, ${now}</div>
       <div class="sign-space"></div>
       <div class="sign-line">Ketua Panitia Qurban</div>
     </div>
@@ -2359,7 +2448,7 @@ const Exporter = {
   <!-- FOOTER -->
   <div class="doc-foot">
     <span>Dicetak: ${nowFull}</span>
-    <span>${APP.NAME} — Sistem Manajemen Data Mustahik v${APP.VERSION}</span>
+    <span>${APP.NAME} — Sistem Manajemen Data Mustahik Qurban v${APP.VERSION}</span>
   </div>
 
 <script>
@@ -2583,7 +2672,7 @@ const Exporter = {
   </div>
 
   <div class="doc-title">
-    <div class="ttl">Daftar Mustahik Qurban — Per RT</div>
+    <div class="ttl">Data Mustahik Qurban — Per RT</div>
     <div class="sub">${sub}</div>
     <div class="ttl-line"></div>
   </div>
@@ -2619,7 +2708,7 @@ const Exporter = {
 
   <div class="doc-foot">
     <span>Dicetak: ${nowFull}</span>
-    <span>${APP.NAME} — Sistem Manajemen Data Mustahik v${APP.VERSION}</span>
+    <span>${APP.NAME} — Sistem Manajemen Data Mustahik Qurban v${APP.VERSION}</span>
   </div>
 
   <script>window.onload=function(){window.focus()};<\/script>
@@ -2636,7 +2725,7 @@ const Exporter = {
 
   /* ── Template import ── */
   template() {
-    const csv = 'Nama Mustahik,RT,Tahun\nTom Cruise,RT 10/04,1447\nDewa Bujana,RT 03/04,1447\nJoko Mulyono,RT 04/04,1447';
+    const csv = 'Nama Mustahik,RT,Tahun\nTom Cruise,RT 10/04,1447\nSharukhan,RT 03/04,1447\nDewi Persik,RT 04/04,1447';
     const blob = new Blob(['\uFEFF'+csv], { type:'text/csv;charset=utf-8;' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob); a.download = 'Template_Import_Mustahik.csv'; a.click();
@@ -3003,7 +3092,7 @@ const Printer = {
 <body>
 
   <!-- KOP SURAT -->
-  <div class="kop">
+<div class="kop">
     <img src="https://i.ibb.co.com/KpLTpmnn/logo-mnf-new-ijo.png" alt="kop" style="width:50px; float:left; margin-right:10px;">
     <div class="kop-div"></div>
     <div class="kop-txt">
@@ -3018,8 +3107,7 @@ const Printer = {
     </div>
     <div class="kop-div"></div>
     <div class="kop-right">
-      <img src="https://i.ibb.co.com/KpLTpmnn/logo-mnf-new-ijo.png" alt="kop" style="width:50px; float:left; margin-right:10px;">
-        <circle cx="50" cy="50" r="48" fill="#1a4f7a"/>
+                <circle cx="50" cy="50" r="48" fill="#1a4f7a"/>
         <text x="50" y="62" text-anchor="middle" font-family="Arial" font-size="48" fill="#fff"></text>
     </div>
   </div>
@@ -3182,7 +3270,7 @@ const UI = {
         const tgl     = d.kuponAt ? ' · ' + new Date(d.kuponAt).toLocaleDateString('id-ID') : '';
         const isNew   = d.id === S.highlightId;
 
-        const canKupon = S.canEdit; // semua login bisa centang
+        const canKupon = S.canKupon; // humas, sekretaris, admin
         const kuponBtn = canKupon
           ? '<button class="btn-kupon ' + (sudah?'done':'undone') + '" ' +
             'onclick="DataMgr.toggleKupon(\'' + d.id + '\')" ' +
@@ -3358,6 +3446,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Audit.init();
   YearMgr.init();
   UI.init();
+  UI.applyAdmin(); // terapkan hak akses awal (guest = formCard tersembunyi)
   DataMgr.load();
 
   // Enter key on form
